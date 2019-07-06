@@ -40,6 +40,7 @@ public class BuildingSystem : MonoBehaviour
     {
         if (CheckIfPlaningPossible())
         {
+            PlayerManager.Instance.RemoveRessources(currentBuilding.buildingData.cost);
             currentBuilding.StartConstruction();
             currentBuilding = Instantiate(currentBuildingPrefab).GetComponent<Building>();
             return true;
@@ -52,16 +53,30 @@ public class BuildingSystem : MonoBehaviour
 
     public bool CheckIfPlaningPossible()
     {
+        bool isPossible = true;
 
+        //1 first check if we have the ressources
+        if (!PlayerManager.Instance.HasRessources(currentBuilding.buildingData.cost))
+        {
+            isPossible = false;
+        }
+        
+        
+        // 3 . check if there is room
         if ((currentBuilding.buildingPlacementTrigger.Collides()))
         {
-            currentBuilding.SetPlaningImpossible();
-            return false;
+            isPossible = false;
         }
-        else
+
+        if (isPossible)
         {
             currentBuilding.SetPlaningPossible();
             return true;
+        }
+        else
+        {
+            currentBuilding.SetPlaningImpossible();
+            return false;
         }
     }
 

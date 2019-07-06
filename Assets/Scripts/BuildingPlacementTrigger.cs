@@ -9,13 +9,13 @@ public class BuildingPlacementTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         collidersInsideTrigger++;
-        Debug.Log(other + "enters");
+        //Debug.Log(other + "enters");
     }
 
     private void OnTriggerExit(Collider other)
     {
         collidersInsideTrigger--;
-        Debug.Log(other + "exits");
+        //Debug.Log(other + "exits");
     }
 
     public bool Collides()

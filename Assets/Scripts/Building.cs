@@ -13,6 +13,7 @@ public enum BuildingState
 public class Building : MonoBehaviour
 {
     public BuildingState state;
+    public BuildingData buildingData;
 
     public GameObject inConstructionModel;
     public GameObject planingModel;

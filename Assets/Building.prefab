@@ -367,6 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  buildingData: {fileID: 11400000, guid: 5bf1bd18b2430f94a95290a2c8eb0756, type: 2}
   inConstructionModel: {fileID: 4055591270729360051}
   planingModel: {fileID: 2504959778896037202}
   planingModelRenderer: {fileID: 7884989230940653916}
