@@ -14,12 +14,36 @@ public class BuildingSystem : MonoBehaviour
     public float gridCellSize;
     //public int gridSize;
 
-    Building currentBuilding;
+    ConstructingBuilding currentBuilding;
     GameObject currentBuildingPrefab;
+
+    public Transform playersBaseLocation;
+    BA_Base playerBase;
+
+    public static BuildingSystem Instance;
+
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            DestroyImmediate(Instance);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+    }
+
+    public void AddBaseBuilding(BA_Base playerBase)
+    {
+        this.playersBaseLocation = playerBase.transform;
+        this.playerBase = playerBase;
+    }
 
     public void StartPlaning(GameObject buildingPrefab)
     {
-        currentBuilding = Instantiate(buildingPrefab).GetComponent<Building>();
+        currentBuilding = Instantiate(buildingPrefab).GetComponent<ConstructingBuilding>();
         currentBuildingPrefab = buildingPrefab;
     }
     
@@ -32,17 +56,18 @@ public class BuildingSystem : MonoBehaviour
     //snaps the current building to the grid
     public void PlanBuilding(Vector3 clickedPoint)
     {
-        SnapBuildingToGrid(clickedPoint);
-        CheckIfPlaningPossible();
+        Vector3 snappedPoint = SnapBuildingToGrid(clickedPoint);
+        CheckIfPlaningPossible(snappedPoint);
     }
 
-    public bool PlaceBuilding()
+    public bool PlaceBuilding(Vector3 clickedPoint)
     {
-        if (CheckIfPlaningPossible())
+        Vector3 snappedPoint = SnapBuildingToGrid(clickedPoint);
+        if (CheckIfPlaningPossible(snappedPoint))
         {
             PlayerManager.Instance.RemoveRessources(currentBuilding.buildingData.cost);
             currentBuilding.StartConstruction();
-            currentBuilding = Instantiate(currentBuildingPrefab).GetComponent<Building>();
+            currentBuilding = Instantiate(currentBuildingPrefab).GetComponent<ConstructingBuilding>();
             return true;
         }
         else
@@ -51,7 +76,7 @@ public class BuildingSystem : MonoBehaviour
         }
     }
 
-    public bool CheckIfPlaningPossible()
+    public bool CheckIfPlaningPossible(Vector3 snappedPosition)
     {
         bool isPossible = true;
 
@@ -60,7 +85,12 @@ public class BuildingSystem : MonoBehaviour
         {
             isPossible = false;
         }
-        
+
+        //2. check if this building is not too far
+        if (Vector3.Distance(playersBaseLocation.position, snappedPosition) > playerBase.buildingDistance)
+        {
+            isPossible = false;
+        }
         
         // 3 . check if there is room
         if ((currentBuilding.buildingPlacementTrigger.Collides()))
@@ -80,9 +110,10 @@ public class BuildingSystem : MonoBehaviour
         }
     }
 
-    public void SnapBuildingToGrid(Vector3 clickedPoint)
+    public Vector3 SnapBuildingToGrid(Vector3 clickedPoint)
     {
-        currentBuilding.transform.position = new Vector3(Mathf.Round(clickedPoint.x / gridCellSize)*gridCellSize, clickedPoint.y + currentBuilding.heightRiser, Mathf.Round(clickedPoint.z / gridCellSize) * gridCellSize);
-        //currentBuilding.transform.position = clickedPoint;
+        Vector3 newPosition = new Vector3(Mathf.Round(clickedPoint.x / gridCellSize) * gridCellSize, clickedPoint.y + currentBuilding.heightRiser, Mathf.Round(clickedPoint.z / gridCellSize) * gridCellSize);
+        currentBuilding.transform.position = newPosition;
+        return newPosition;
     }
 }

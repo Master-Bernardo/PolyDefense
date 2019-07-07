@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("click");
-                buildingSystem.PlaceBuilding();
+                buildingSystem.PlaceBuilding(hit.point);
 
             }
         }

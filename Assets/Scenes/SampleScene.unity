@@ -139,6 +139,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &92430146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92430144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669e382f3874f924685cd79881524649, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingDistance: 5
+--- !u!114 &92430147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92430144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73c3e4062937b7544b478e791abd233a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamID: 0
+  buildingData: {fileID: 11400000, guid: 5bf1bd18b2430f94a95290a2c8eb0756, type: 2}
+  buildingAbilities:
+  - {fileID: 92430146}
 --- !u!224 &478738856 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5826701858733181107, guid: dfe934735499a77499becd934b986291,
@@ -461,8 +490,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -113.3, y: 132.9}
-  m_SizeDelta: {x: -226.6, y: -265.8}
+  m_AnchoredPosition: {x: -113.3, y: 173.6}
+  m_SizeDelta: {x: -226.6, y: -347.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1001859165
 MonoBehaviour:
@@ -1038,14 +1067,16 @@ MonoBehaviour:
   playerID: 0
   ressources:
   - type: 0
-    value: 0
-    capacity: 20
+    value: 40
+    capacity: 40
   - type: 1
     value: 0
     capacity: 15
   - type: 2
     value: 0
     capacity: 3
+  populationLimit: 0
+  currentPopulation: 0
 --- !u!4 &1481691647
 Transform:
   m_ObjectHideFlags: 0
@@ -1484,6 +1515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridCellSize: 1
+  playersBaseLocation: {fileID: 0}
 --- !u!4 &2006843931
 Transform:
   m_ObjectHideFlags: 0

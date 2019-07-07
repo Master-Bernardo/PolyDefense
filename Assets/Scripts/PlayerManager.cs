@@ -29,11 +29,17 @@ public class ManagersRessource
     public int capacity;
 }
 
+/*
+ * keeps track of players ressources and other things - which things? 
+ */
 public class PlayerManager : MonoBehaviour
 {
     public int playerID; //if later on we would want to add another
 
     public ManagersRessource[] ressources;
+
+    public int populationLimit;
+    public int currentPopulation;
     
 
     public static PlayerManager Instance;
@@ -49,7 +55,12 @@ public class PlayerManager : MonoBehaviour
             Instance = this;
         }
 
+    }
+
+    private void Start()
+    {
         UpdateUIRessources();
+
     }
 
 

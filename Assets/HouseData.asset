@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HouseData
   m_EditorClassIdentifier: 
   buildingName: House
+  constructionPoints: 50
   cost:
   - type: 0
     value: 10

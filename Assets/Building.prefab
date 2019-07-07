@@ -242,6 +242,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f6098efcd483f4ca4556a7d6676a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6128118715983605811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 271805942019880286}
+  m_Layer: 10
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &271805942019880286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6128118715983605811}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 1.178}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2433651503394074549}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6802429802026098761
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,8 +283,12 @@ GameObject:
   - component: {fileID: 2433651503394074549}
   - component: {fileID: 1209503788044969649}
   - component: {fileID: 7581422601766608548}
+  - component: {fileID: 4109711283112413405}
+  - component: {fileID: 4336533462112817134}
+  - component: {fileID: 3042780732121521724}
+  - component: {fileID: 8619082239223037375}
   m_Layer: 10
-  m_Name: ConstructedModel
+  m_Name: FinishedBuilding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,7 +304,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 271805942019880286}
   m_Father: {fileID: 786022377633788787}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -319,6 +354,66 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4109711283112413405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802429802026098761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d09942302f025e54e99799799e3a8051, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamID: 0
+  buildingData: {fileID: 11400000, guid: 5bf1bd18b2430f94a95290a2c8eb0756, type: 2}
+  buildingAbilities:
+  - {fileID: 4336533462112817134}
+  - {fileID: 3042780732121521724}
+--- !u!114 &4336533462112817134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802429802026098761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ba4cfc7bb480dd4e8a1f4a0ccbc394e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  populationSpawnInterval: 2
+  spawnPoint: {fileID: 271805942019880286}
+  workerPrefab: {fileID: -927199367670048503, guid: 89e9b1928702bcd42bfc3f93944ea124,
+    type: 3}
+--- !u!114 &3042780732121521724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802429802026098761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29605c1889aeaff4f836c669ec74d3bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  populationLimit: 15
+--- !u!65 &8619082239223037375
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802429802026098761}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &7909549843048521859
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,13 +461,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08c98ad8b9990b044af72f85d6094f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamID: 0
   state: 0
   buildingData: {fileID: 11400000, guid: 5bf1bd18b2430f94a95290a2c8eb0756, type: 2}
   inConstructionModel: {fileID: 4055591270729360051}
   planingModel: {fileID: 2504959778896037202}
   planingModelRenderer: {fileID: 7884989230940653916}
-  constructedModel: {fileID: 6802429802026098761}
+  constructedBuilding: {fileID: 6802429802026098761}
   buildingPlacementTrigger: {fileID: 9171204291035273122}
   buildingConstructionModelChanger: {fileID: 1018521818856346831}
-  constructionPoints: 50
   heightRiser: 0.5
