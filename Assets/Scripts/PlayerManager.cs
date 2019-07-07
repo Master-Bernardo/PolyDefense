@@ -40,6 +40,8 @@ public class PlayerManager : MonoBehaviour
 
     public int populationLimit;
     public int currentPopulation;
+
+    HashSet<Ab_Worker> idleWorkers = new HashSet<Ab_Worker>();
     
 
     public static PlayerManager Instance;
@@ -88,6 +90,16 @@ public class PlayerManager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void AddIdleWorker(Ab_Worker worker)
+    {
+        idleWorkers.Add(worker);
+    }
+
+    public void RemoveIdleWorker(Ab_Worker worker)
+    {
+        idleWorkers.Remove(worker);
     }
 
     public void RaisePopulation(int population)

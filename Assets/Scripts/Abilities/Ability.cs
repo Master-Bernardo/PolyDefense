@@ -14,6 +14,7 @@ public class Ability : MonoBehaviour
 
     public virtual void UpdateAbility()
     {
+
     }
 
     public virtual void OnDie()

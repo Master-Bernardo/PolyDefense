@@ -9,6 +9,7 @@ public class Ab_PopulationLimitRaiser : PassiveAbility
     public override void SetUpAbility(GameEntity entity)
     {
         PlayerManager.Instance.RaisePopulationLimit(populationLimit);
+        Debug.Log("setting uppe");
     }
     public override void OnDie()
     {

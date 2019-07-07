@@ -14,11 +14,12 @@ public class BuildingSystem : MonoBehaviour
     public float gridCellSize;
     //public int gridSize;
 
-    ConstructingBuilding currentBuilding;
-    GameObject currentBuildingPrefab;
+    BuildingPlacer currentBuildingPlacer;
 
     public Transform playersBaseLocation;
     Ab_Base playerBase;
+
+    HashSet<BuildingInConstruction> buildingsToConstruct = new HashSet<BuildingInConstruction>();
 
     public static BuildingSystem Instance;
 
@@ -35,53 +36,62 @@ public class BuildingSystem : MonoBehaviour
 
     }
 
-    public void AddBaseBuilding(Ab_Base playerBase)
+    #region Management of other buildings 
+    public void SetBaseBuilding(Ab_Base playerBase)
     {
         this.playersBaseLocation = playerBase.transform;
         this.playerBase = playerBase;
     }
 
-    public void StartPlaning(GameObject buildingPrefab)
+    public void AddBuildingWaitingForConstruction(BuildingInConstruction building)
     {
-        currentBuilding = Instantiate(buildingPrefab).GetComponent<ConstructingBuilding>();
-        currentBuildingPrefab = buildingPrefab;
+        buildingsToConstruct.Add(building);
+    }
+
+    public void RemoveBuildingWaitingForConstruction(BuildingInConstruction building)
+    {
+        buildingsToConstruct.Remove(building);
+    }
+
+    public HashSet<BuildingInConstruction> GetBuildingsWaitingForConstruction()
+    {
+        return buildingsToConstruct;
+    }
+
+    public bool AreThereBuildingsToConstruct()
+    {
+        if(buildingsToConstruct.Count>0) return true;
+        else return false;
+    }
+
+    #endregion
+
+
+    #region building placement
+
+    public void StartPlaning(GameObject currentBuildingPlacerGO)
+    {
+        currentBuildingPlacer = Instantiate(currentBuildingPlacerGO).GetComponent<BuildingPlacer>();
     }
     
     public void StopPlaning()
     {
-        Destroy(currentBuilding.gameObject);
-        currentBuilding = null;
+        Destroy(currentBuildingPlacer.gameObject);
     }
     
     //snaps the current building to the grid
     public void PlanBuilding(Vector3 clickedPoint)
     {
         Vector3 snappedPoint = SnapBuildingToGrid(clickedPoint);
-        CheckIfPlaningPossible(snappedPoint);
+        CheckIfPlacingPossible(snappedPoint);
     }
 
-    public bool PlaceBuilding(Vector3 clickedPoint)
-    {
-        Vector3 snappedPoint = SnapBuildingToGrid(clickedPoint);
-        if (CheckIfPlaningPossible(snappedPoint))
-        {
-            PlayerManager.Instance.RemoveRessources(currentBuilding.buildingData.cost);
-            currentBuilding.StartConstruction();
-            currentBuilding = Instantiate(currentBuildingPrefab).GetComponent<ConstructingBuilding>();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool CheckIfPlaningPossible(Vector3 snappedPosition)
+    public bool CheckIfPlacingPossible(Vector3 snappedPosition)
     {
         bool isPossible = true;
 
         //1 first check if we have the ressources
-        if (!PlayerManager.Instance.HasRessources(currentBuilding.buildingData.cost))
+        if (!PlayerManager.Instance.HasRessources(currentBuildingPlacer.buildingData.cost))
         {
             isPossible = false;
         }
@@ -91,29 +101,49 @@ public class BuildingSystem : MonoBehaviour
         {
             isPossible = false;
         }
-        
+
         // 3 . check if there is room
-        if ((currentBuilding.buildingPlacementTrigger.Collides()))
+        if ((currentBuildingPlacer.buildingPlacementTrigger.Collides()))
         {
             isPossible = false;
         }
 
         if (isPossible)
         {
-            currentBuilding.SetPlaningPossible();
+            currentBuildingPlacer.SetPlaningPossible();
             return true;
         }
         else
         {
-            currentBuilding.SetPlaningImpossible();
+            currentBuildingPlacer.SetPlaningImpossible();
+            return false;
+        }
+    }
+
+    public bool PlaceBuilding(Vector3 clickedPoint)
+    {
+        Vector3 snappedPoint = SnapBuildingToGrid(clickedPoint);
+        if (CheckIfPlacingPossible(snappedPoint))
+        {
+            PlayerManager.Instance.RemoveRessources(currentBuildingPlacer.buildingData.cost);
+            currentBuildingPlacer.SpawnBuildingForConstruction();
+            return true;
+        }
+        else
+        {
             return false;
         }
     }
 
     public Vector3 SnapBuildingToGrid(Vector3 clickedPoint)
     {
-        Vector3 newPosition = new Vector3(Mathf.Round(clickedPoint.x / gridCellSize) * gridCellSize, clickedPoint.y + currentBuilding.heightRiser, Mathf.Round(clickedPoint.z / gridCellSize) * gridCellSize);
-        currentBuilding.transform.position = newPosition;
+        // Vector3 newPosition = new Vector3(Mathf.Round(clickedPoint.x / gridCellSize) * gridCellSize, clickedPoint.y + currentBuildingPlacer.heightRiser, Mathf.Round(clickedPoint.z / gridCellSize) * gridCellSize);
+        Vector3 newPosition = new Vector3(Mathf.Round(clickedPoint.x / gridCellSize) * gridCellSize, clickedPoint.y , Mathf.Round(clickedPoint.z / gridCellSize) * gridCellSize);
+
+        currentBuildingPlacer.transform.position = newPosition;
         return newPosition;
     }
+
+   #endregion
+
 }

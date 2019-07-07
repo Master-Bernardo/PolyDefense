@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Building : GameEntity
+public class Building : GameEntity, IDamageable<float>
 {
     public BuildingData buildingData;
-    public Ability[] buildingAbilities;
     float currentHealth;
 
 
-    public override void TakeDamage(float damage)
+
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         if (currentHealth <= 0)
@@ -26,29 +26,6 @@ public class Building : GameEntity
         currentHealth = buildingData.healthPoints;
     }
 
-    private void Start()
-    {
-        foreach(Ability ability in buildingAbilities)
-        {
-            ability.SetUpAbility(this);
-        }
-    }
-
-    public void Update()
-    {
-        foreach (Ability ability in buildingAbilities)
-        {
-            ability.UpdateAbility();
-        }
-    }
-
-    public override void OnDie()
-    {
-        foreach (Ability ability in buildingAbilities)
-        {
-            ability.OnDie();
-        }
-        base.OnDie();
-    }
+    
 }
 

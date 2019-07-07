@@ -10,7 +10,7 @@ public class Ab_Base : Ability
 
     public override void SetUpAbility(GameEntity entity)
     {
-        BuildingSystem.Instance.AddBaseBuilding(this);
+        BuildingSystem.Instance.SetBaseBuilding(this);
     }
 
 
