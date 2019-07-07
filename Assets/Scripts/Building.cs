@@ -6,7 +6,7 @@ using UnityEngine;
 public class Building : GameEntity
 {
     public BuildingData buildingData;
-    public BuildingAbility[] buildingAbilities;
+    public Ability[] buildingAbilities;
     float currentHealth;
 
 
@@ -28,15 +28,15 @@ public class Building : GameEntity
 
     private void Start()
     {
-        foreach(BuildingAbility ability in buildingAbilities)
+        foreach(Ability ability in buildingAbilities)
         {
-            ability.SetUpAbility();
+            ability.SetUpAbility(this);
         }
     }
 
     public void Update()
     {
-        foreach (BuildingAbility ability in buildingAbilities)
+        foreach (Ability ability in buildingAbilities)
         {
             ability.UpdateAbility();
         }
@@ -44,7 +44,7 @@ public class Building : GameEntity
 
     public override void OnDie()
     {
-        foreach (BuildingAbility ability in buildingAbilities)
+        foreach (Ability ability in buildingAbilities)
         {
             ability.OnDie();
         }

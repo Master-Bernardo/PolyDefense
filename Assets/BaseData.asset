@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16e2397b20eace547a93caecefd99f94, type: 3}
-  m_Name: HouseData
+  m_Name: BaseData
   m_EditorClassIdentifier: 
-  buildingName: House
-  constructionPoints: 50
-  healthPoints: 25
+  buildingName: Base
+  constructionPoints: 250
+  healthPoints: 100
   cost:
   - type: 0
+    value: 100
+  - type: 1
     value: 10
+  - type: 2
+    value: 1

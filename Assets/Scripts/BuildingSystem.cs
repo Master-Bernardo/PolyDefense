@@ -18,7 +18,7 @@ public class BuildingSystem : MonoBehaviour
     GameObject currentBuildingPrefab;
 
     public Transform playersBaseLocation;
-    BA_Base playerBase;
+    Ab_Base playerBase;
 
     public static BuildingSystem Instance;
 
@@ -35,7 +35,7 @@ public class BuildingSystem : MonoBehaviour
 
     }
 
-    public void AddBaseBuilding(BA_Base playerBase)
+    public void AddBaseBuilding(Ab_Base playerBase)
     {
         this.playersBaseLocation = playerBase.transform;
         this.playerBase = playerBase;

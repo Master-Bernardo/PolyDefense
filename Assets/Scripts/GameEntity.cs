@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 //buildings and Units derive from this class - should i use it instead of damageable interface
 public class GameEntity : MonoBehaviour
 {

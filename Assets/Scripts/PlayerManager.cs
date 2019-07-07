@@ -60,6 +60,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         UpdateUIRessources();
+        UpdateUIPopulation();
 
     }
 
@@ -74,6 +75,41 @@ public class PlayerManager : MonoBehaviour
         {
             if (HasRessource(RessourceType.fer, 5)) RemoveRessource(RessourceType.fer, 5);
         }
+    }
+
+    //checks if we can spawn this unit with the specified populationValue - some bigger units consume more than 1 population
+    public bool SpawnPossible(int populationValue)
+    {
+        if(currentPopulation + populationValue <= populationLimit)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void RaisePopulation(int population)
+    {
+        currentPopulation += population;
+        UpdateUIPopulation();    }
+
+    public void LowerPopulation(int population)
+    {
+        currentPopulation -= population;
+        UpdateUIPopulation();    }
+
+    public void RaisePopulationLimit(int population)
+    {
+        populationLimit += population;
+        UpdateUIPopulation();
+    }
+
+    public void LowerPopulationLimit(int population)
+    {
+        populationLimit -= population;
+        UpdateUIPopulation();
     }
 
     public void AddRessource(RessourceType type, int value)
@@ -134,5 +170,11 @@ public class PlayerManager : MonoBehaviour
     void UpdateUIRessources()
     {
         UIManager.Instance.UpdateRessourcesUI(GetRessource(RessourceType.fer).value, GetRessource(RessourceType.mer).value, GetRessource(RessourceType.rubith).value);
+    }
+
+    void UpdateUIPopulation()
+    {
+        UIManager.Instance.UpdatePopulationUI(currentPopulation, populationLimit);
+
     }
 }

@@ -12,6 +12,9 @@ public class UIManager : MonoBehaviour
     public Text merRessource;
     public Text rubithRessource;
 
+    public Text currentPopulation;
+    public Text populationLimit;
+
     void Awake()
     {
         if (Instance != null)
@@ -29,6 +32,12 @@ public class UIManager : MonoBehaviour
         ferRessource.text = ferValue.ToString();
         merRessource.text = merValue.ToString();
         rubithRessource.text = rubithValue.ToString();
+    }
+
+    public void UpdatePopulationUI(int currentPopulation, int populationLimit)
+    {
+        this.currentPopulation.text = currentPopulation.ToString();
+        this.populationLimit.text = populationLimit.ToString();
     }
 
 }

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingAbility : MonoBehaviour
+public class Ability : MonoBehaviour
 {
-    public virtual void SetUpAbility()
-    {
 
+    protected GameEntity myEntity;
+
+    public virtual void SetUpAbility(GameEntity entity)
+    {
+        myEntity = entity;
     }
 
     public virtual void UpdateAbility()
@@ -20,7 +23,7 @@ public class BuildingAbility : MonoBehaviour
 }
 
 //can be toogled on of via UI
-public class PassiveToogleableBuildingAbility : BuildingAbility
+public class PassiveToogleableAbility : Ability
 {
     public bool active;
 
@@ -31,7 +34,7 @@ public class PassiveToogleableBuildingAbility : BuildingAbility
 }
 
 //can be clicked to activate via UI
-public class ActiveBuildingAbility : BuildingAbility
+public class ActiveAbility : Ability
 {
     public virtual void ActivateAbility()
     {
@@ -39,7 +42,7 @@ public class ActiveBuildingAbility : BuildingAbility
     }
 }
 
-public class PassiveBuildingAbility : BuildingAbility
+public class PassiveAbility : Ability
 {
 
 }
