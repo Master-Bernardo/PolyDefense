@@ -396,6 +396,7 @@ GameObject:
   - component: {fileID: 3324107168754545431}
   - component: {fileID: 3324107168754545428}
   - component: {fileID: 8218979901697691925}
+  - component: {fileID: 7797877077940862510}
   m_Layer: 11
   m_Name: MerRessource
   m_TagString: Untagged
@@ -449,6 +450,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 1, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &7797877077940862510
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3324107168754545429}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1, y: 0.5, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4750584025585783471
 GameObject:
   m_ObjectHideFlags: 0

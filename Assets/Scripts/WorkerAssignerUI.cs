@@ -8,6 +8,9 @@ public interface IWorkerAssigneable<T>
     int SetWorkerNumber(T newNumber);
 }
 
+
+
+
 public class WorkerAssignerUI : MonoBehaviour
 {
     //when on of the buttons gets klicked, it calls a function of this assigner- how exactly?
@@ -21,14 +24,19 @@ public class WorkerAssignerUI : MonoBehaviour
     public Ability assigneableAb; //because unity doesnt serialise interfaces, we get it on awake
     public Canvas canvas;
 
+   
+
 
     private void Start()
     {
         //set the interface value 
         assignealbe = assigneableAb.GetComponent<IWorkerAssigneable<int>>();
-        Debug.Log("assigneable: " + assignealbe);
         UIManager.Instance.AddWorkerAssigner(this);
+
+
     }
+
+     
 
     public void SetWorkerNumber(int buttonID)
     {
@@ -45,18 +53,19 @@ public class WorkerAssignerUI : MonoBehaviour
     void UpdateUI(int workersAssigned)
     {
         //set the worker images
-        for(int i = 1; i<=workersAssigned; i++)
+        for(int i = 0; i<=workersAssigned; i++)
         {
             images[i].color = workerColor;
         }
 
-        for(int i = workersAssigned+1; i<images.Length; i++)
+        for(int i = workersAssigned; i<images.Length; i++)
         {
             images[i].color = noWorkerColor;
         }
 
                
     }
+
 
     private void OnDestroy()
     {

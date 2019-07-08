@@ -33,8 +33,6 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            Debug.Log("show");
-            Debug.Log(workerAssigners.Count);
             ShowWorkerAssigners();
         }
         if (Input.GetKeyDown(KeyCode.H))
