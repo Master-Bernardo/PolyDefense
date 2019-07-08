@@ -102,6 +102,30 @@ public class PlayerManager : MonoBehaviour
         idleWorkers.Remove(worker);
     }
 
+    public int GetIdleWorkersNumber()
+    {
+        return idleWorkers.Count;
+    }
+
+    public Ab_Worker GetNearestIdleWorker(Vector3 position)
+    {
+        Ab_Worker nearestWorker = null;
+        float nearestDistance = Mathf.Infinity;
+
+        foreach(Ab_Worker worker in idleWorkers)
+        {
+            float currentDistance = (worker.transform.position - position).sqrMagnitude;
+
+            if (currentDistance < nearestDistance)
+            {
+                nearestDistance = currentDistance;
+                nearestWorker = worker;
+            }
+        }
+
+        return nearestWorker;
+    }
+
     public void RaisePopulation(int population)
     {
         currentPopulation += population;

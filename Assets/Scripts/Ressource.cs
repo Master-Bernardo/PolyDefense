@@ -10,10 +10,11 @@ public class Ressource : GameEntity
     public RessourceType type;
     public float width;
 
-    private void Awake()
+    private void Start()
     {
         currentRessourceAmount = maxRessourceAmount;
         RessourcesManager.Instance.AddRessource(this);
+
     }
 
     //returns the requestet amount or fewer if fewer is left

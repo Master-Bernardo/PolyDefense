@@ -75,7 +75,7 @@ public class Ab_Worker : Ability
         base.SetUpAbility(entity);
         movement = GetComponent<Ab_Movement>();
         nextScanTime = Time.time + Random.Range(0, scanInterval);
-        //AssignToIdle();
+        AssignToIdle();
     }
 
     public override void UpdateAbility()
@@ -353,6 +353,7 @@ public class Ab_Worker : Ability
         if(state == WorkerState.Idle) PlayerManager.Instance.RemoveIdleWorker(this);
         this.assignedBase = assignedBase;
         state = WorkerState.Construction;
+        constructionState = ConstructionState.Idle;
         nextScanTime = Time.time;
     }
 
@@ -362,6 +363,7 @@ public class Ab_Worker : Ability
         this.assignedHarvester = harvester;
         currentAssignedHarvesterType = harvester.type;
         state = WorkerState.Harvesting;
+        harvestingState = HarvestingState.Idle;
         nextScanTime = Time.time;
 
     }

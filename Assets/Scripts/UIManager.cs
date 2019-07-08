@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     public Text currentPopulation;
     public Text populationLimit;
 
+    HashSet<WorkerAssignerUI> workerAssigners = new HashSet<WorkerAssignerUI>();
+
     void Awake()
     {
         if (Instance != null)
@@ -24,6 +26,20 @@ public class UIManager : MonoBehaviour
         else
         {
             Instance = this;
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.Log("show");
+            Debug.Log(workerAssigners.Count);
+            ShowWorkerAssigners();
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            HideWorkerAssigners();
         }
     }
 
@@ -38,6 +54,32 @@ public class UIManager : MonoBehaviour
     {
         this.currentPopulation.text = currentPopulation.ToString();
         this.populationLimit.text = populationLimit.ToString();
+    }
+
+    public void AddWorkerAssigner(WorkerAssignerUI work)
+    {
+        workerAssigners.Add(work);
+    }
+
+    public void RemoveWorkerAssigner(WorkerAssignerUI work)
+    {
+        workerAssigners.Remove(work);
+    }
+
+    public void ShowWorkerAssigners()
+    {
+        foreach(WorkerAssignerUI assigner in workerAssigners)
+        {
+            assigner.canvas.enabled = true;
+        }
+    }
+
+    public void HideWorkerAssigners()
+    {
+        foreach (WorkerAssignerUI assigner in workerAssigners)
+        {
+            assigner.canvas.enabled = false;
+        }
     }
 
 }
