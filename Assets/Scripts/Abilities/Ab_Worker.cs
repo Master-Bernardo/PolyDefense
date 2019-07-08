@@ -19,13 +19,25 @@ public class Ab_Worker : Ability
         Constructing
     }
 
+    enum HarvestingState
+    {
+        Idle,
+        MovingToRessource,
+        GatheringRessource,
+        TransportingRessourceToHarvester
+    }
+
     [SerializeField]
     WorkerState state;
     [SerializeField]
     ConstructionState constructionState;
+    [SerializeField]
+    HarvestingState harvestingState;
 
     Ab_Base assignedBase;
     Ab_HarvestingBuilding assignedHarvester;
+    RessourceType currentAssignedHarvesterType;
+    
 
     BuildingInConstruction currentlyAssignedBuildingToBuild;
 
@@ -46,6 +58,17 @@ public class Ab_Worker : Ability
     public float constructionInterval;
     float nextConstructionTime;
     bool standingBesideBaseAndWaiting = false; //if thers nothing todo thy do this
+
+    //for ressourceGathering
+    [Tooltip("how much ressources do we gather on one hit")]
+    public int ressourceGatheringPower;
+    public int ressourceTransportLoad;
+    int currentRessourceTransportLoad = 0;
+    public float ressourceGatherInterval;
+    float nextRessourceGatheringTime;
+    bool standingBesideHarvesterAndWaiting = false;
+    Ressource currentSelectedRessource;
+
 
     public override void SetUpAbility(GameEntity entity)
     {
@@ -130,9 +153,11 @@ public class Ab_Worker : Ability
 
                         if (Time.time > nextScanTime)
                         {
+
+                            nextScanTime = Time.time + scanInterval;
+
                             if (currentlyAssignedBuildingToBuild != null)
                             {
-                                nextScanTime = Time.time + scanInterval;
 
                                 if (Vector3.Distance(transform.position, currentlyAssignedBuildingToBuild.transform.position) < currentlyAssignedBuildingToBuild.width)
                                 {
@@ -177,6 +202,146 @@ public class Ab_Worker : Ability
 
             case WorkerState.Harvesting:
 
+                switch (harvestingState)
+                {
+                    case HarvestingState.Idle:
+
+                        //check if there are some ressources in the area - should it check with physics check or get the nearest from the ressourcesmanager?
+                        if (Time.time > nextScanTime)
+                        {
+                            nextScanTime = Time.time + scanInterval;
+
+                            HashSet<Ressource> ressources = RessourcesManager.Instance.GetRessources(currentAssignedHarvesterType);
+
+                            if (ressources.Count > 0)
+                            {
+                                standingBesideHarvesterAndWaiting = false;
+
+
+                                Ressource nearestRessource = null;
+                                float nearestDistance = Mathf.Infinity;
+
+                                foreach (Ressource ressource in ressources)
+                                {
+                                    float currentDistance = (ressource.transform.position - transform.position).sqrMagnitude;
+
+                                    if (currentDistance < nearestDistance)
+                                    {
+                                        nearestDistance = currentDistance;
+                                        nearestRessource = ressource;
+                                    }
+                                }
+
+                                currentSelectedRessource = nearestRessource;
+                                movement.MoveTo(currentSelectedRessource.transform.position);
+                                harvestingState = HarvestingState.MovingToRessource;
+                            }
+                            else if(!standingBesideHarvesterAndWaiting)
+                            {
+                                Vector3 positonToMoveTo = Random.insideUnitSphere * 5;
+                                positonToMoveTo += assignedHarvester.transform.position;
+                                standingBesideHarvesterAndWaiting = true;
+                                movement.MoveTo(positonToMoveTo);
+                            }
+                        }
+
+                            break;
+
+                    case HarvestingState.MovingToRessource:
+
+                        if (Time.time > nextScanTime)
+                        {
+                            nextScanTime = Time.time + scanInterval;
+
+
+                            if (currentSelectedRessource != null)
+                            {
+
+                                if (Vector3.Distance(transform.position, currentSelectedRessource.transform.position) < currentSelectedRessource.width)
+                                {
+                                    movement.Stop();
+                                    harvestingState = HarvestingState.GatheringRessource;
+                                    nextRessourceGatheringTime = Time.time + ressourceGatherInterval;
+                                }
+                            }
+                            else
+                            {
+                                harvestingState = HarvestingState.Idle;
+                            }
+                        }
+
+                        break;
+
+                    case HarvestingState.GatheringRessource:
+
+                        if (Time.time > nextRessourceGatheringTime)
+                        {                         
+                            //check if it istn completed yet
+                            if (currentSelectedRessource != null)
+                            {
+                                nextRessourceGatheringTime = Time.time + ressourceGatherInterval;
+                                //gather but check how much will fit
+                                if(currentRessourceTransportLoad + ressourceGatheringPower > ressourceTransportLoad)
+                                {
+                                    currentRessourceTransportLoad += currentSelectedRessource.TakeRessource(ressourceTransportLoad-currentRessourceTransportLoad);
+                                }
+                                else
+                                {
+                                    currentRessourceTransportLoad += currentSelectedRessource.TakeRessource(ressourceGatheringPower);
+                                }
+
+                                //if the sack is full, go back
+                                if (currentRessourceTransportLoad == ressourceTransportLoad)
+                                {
+                                    movement.MoveTo(assignedHarvester.transform.position);
+                                    harvestingState = HarvestingState.TransportingRessourceToHarvester;
+                                }
+                            }
+                            else
+                            {
+                                if (currentRessourceTransportLoad > 0)
+                                {
+                                    movement.MoveTo(assignedHarvester.transform.position);
+                                    harvestingState = HarvestingState.TransportingRessourceToHarvester;
+                                }
+                                else
+                                {
+                                    harvestingState = HarvestingState.Idle;
+                                }
+                            }
+
+                        }
+
+                        break;
+
+                    case HarvestingState.TransportingRessourceToHarvester:
+
+                        if (Time.time > nextScanTime)
+                        {
+                            nextScanTime = Time.time + scanInterval;
+
+                            if (Vector3.Distance(transform.position, assignedHarvester.transform.position) < assignedHarvester.width)
+                            {
+                                movement.Stop();
+                                assignedHarvester.DepotRessource(currentRessourceTransportLoad);
+                                currentRessourceTransportLoad = 0;
+
+                                if (currentSelectedRessource != null)
+                                {
+                                    harvestingState = HarvestingState.MovingToRessource;
+                                    movement.MoveTo(currentSelectedRessource.transform.position);
+                                }
+                                else
+                                {
+                                    harvestingState = HarvestingState.Idle;
+                                }
+                                
+
+                            }
+                        }
+                        break;
+                }
+
                 break;
         }
             
@@ -195,6 +360,7 @@ public class Ab_Worker : Ability
     {
         if (state == WorkerState.Idle) PlayerManager.Instance.RemoveIdleWorker(this);
         this.assignedHarvester = harvester;
+        currentAssignedHarvesterType = harvester.type;
         state = WorkerState.Harvesting;
         nextScanTime = Time.time;
 

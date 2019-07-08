@@ -431,9 +431,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 0
+  abilities: []
   maxRessourceAmount: 100
   infinite: 0
   type: 1
+  width: 3.5
 --- !u!65 &8218979901697691925
 BoxCollider:
   m_ObjectHideFlags: 0

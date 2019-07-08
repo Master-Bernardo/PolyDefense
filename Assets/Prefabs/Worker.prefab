@@ -252,11 +252,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  constructionState: 0
+  harvestingState: 0
+  assignedHarvester: {fileID: 0}
+  currentAssignedHarvesterType: 0
   idleMovementInterval: 0.7
   maxDistanceToBaseForWander: 15
   scanInterval: 1
   constructionPoints: 5
   constructionInterval: 1
+  ressourceGatheringPower: 1
+  ressourceTransportLoad: 5
+  ressourceGatherInterval: 1
 --- !u!114 &1362219360397472218
 MonoBehaviour:
   m_ObjectHideFlags: 0

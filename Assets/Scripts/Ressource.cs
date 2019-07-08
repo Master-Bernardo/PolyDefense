@@ -8,10 +8,12 @@ public class Ressource : GameEntity
     public bool infinite;
     int currentRessourceAmount;
     public RessourceType type;
+    public float width;
 
     private void Awake()
     {
         currentRessourceAmount = maxRessourceAmount;
+        RessourcesManager.Instance.AddRessource(this);
     }
 
     //returns the requestet amount or fewer if fewer is left
@@ -29,6 +31,13 @@ public class Ressource : GameEntity
             if (currentRessourceAmount == 0) OnDie();
             return amount;
         }
+    }
+
+    public override void OnDie()
+    {
+        RessourcesManager.Instance.RemoveRessource(this);
+        base.OnDie();
+
     }
 
 }
