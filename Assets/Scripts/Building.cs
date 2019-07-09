@@ -7,6 +7,7 @@ public class Building : GameEntity, IDamageable<float>
 {
     public BuildingData buildingData;
     float currentHealth;
+    public float width;
 
 
 

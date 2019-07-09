@@ -71,14 +71,15 @@ public class BuildingSystem : MonoBehaviour
 
     public void StartPlaning(GameObject currentBuildingPlacerGO)
     {
+        if (currentBuildingPlacer != null) Destroy(currentBuildingPlacer.gameObject);
         currentBuildingPlacer = Instantiate(currentBuildingPlacerGO).GetComponent<BuildingPlacer>();
     }
     
     public void StopPlaning()
     {
-        Destroy(currentBuildingPlacer.gameObject);
+        if(currentBuildingPlacer!=null) Destroy(currentBuildingPlacer.gameObject);
     }
-    
+
     //snaps the current building to the grid
     public void PlanBuilding(Vector3 clickedPoint)
     {

@@ -9,7 +9,8 @@ public class Ab_Worker : Ability
     {
         Idle,
         Construction,
-        Harvesting
+        Harvesting,
+        Depositing//dont know the words but the units go to the building and dissapear into it
     }
 
     enum ConstructionState
@@ -25,6 +26,11 @@ public class Ab_Worker : Ability
         MovingToRessource,
         GatheringRessource,
         TransportingRessourceToHarvester
+    }
+
+    enum DepositionState
+    {
+        MovingToBuilding
     }
 
     [SerializeField]
@@ -68,6 +74,9 @@ public class Ab_Worker : Ability
     float nextRessourceGatheringTime;
     bool standingBesideHarvesterAndWaiting = false;
     Ressource currentSelectedRessource;
+
+    //for deposition
+    Building despositionBuilding;
 
 
     public override void SetUpAbility(GameEntity entity)
@@ -343,6 +352,28 @@ public class Ab_Worker : Ability
                 }
 
                 break;
+
+            case WorkerState.Depositing:
+
+                if (Time.time > nextScanTime)
+                {
+                    nextScanTime = Time.time + scanInterval;
+
+                    if (despositionBuilding != null)
+                    {
+                        if (Vector3.Distance(transform.position, despositionBuilding.transform.position) < despositionBuilding.width)
+                        {
+                            despositionBuilding.GetComponent<IDepositioneable<Ab_Worker>>().DepositionWorker(this);
+                        }
+                    }
+                    else
+                    {
+                        AssignToIdle();
+                    }
+                }
+                
+
+                break;
         }
             
         
@@ -364,6 +395,17 @@ public class Ab_Worker : Ability
         currentAssignedHarvesterType = harvester.type;
         state = WorkerState.Harvesting;
         harvestingState = HarvestingState.Idle;
+        nextScanTime = Time.time;
+
+    }
+
+    public void AssignToDeposition(Building depositioneable)
+    {
+        if (state == WorkerState.Idle) PlayerManager.Instance.RemoveIdleWorker(this);
+        despositionBuilding = depositioneable;
+        despositionBuilding.GetComponent<IDepositioneable<Ab_Worker>>().OnWorkerGetsTaksAssigned(this);
+        state = WorkerState.Depositing;
+        movement.MoveTo(despositionBuilding.transform.position);
         nextScanTime = Time.time;
 
     }

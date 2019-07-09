@@ -24,7 +24,6 @@ public class Ab_Spawner : PassiveToogleableAbility
             if (PlayerManager.Instance.SpawnPossible(1))
             {
                 //this should happen if the unit spawns
-                PlayerManager.Instance.RaisePopulation(1);
                 nextPopulationSpawnTime = Time.time + populationSpawnInterval;
                 GameObject instantiatedWorker = Instantiate(workerPrefab);
                 instantiatedWorker.transform.position = spawnPoint.position;

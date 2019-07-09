@@ -14,6 +14,10 @@ public class BuildingData : ScriptableObject
 
     public RessourceValuePair[] cost;
 
+    [Tooltip("the image which gets shown in the UI")]
+    public Sprite menuImage;
+    public GameObject placerPrefab;
+
 
 
     

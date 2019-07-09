@@ -5,6 +5,7 @@ using UnityEngine;
 public enum PlayerControllerState
 {
     BuildingMode,
+    EconomyManagement,
     Default
 }
 
@@ -18,6 +19,14 @@ public class PlayerController : MonoBehaviour
     public GameObject testBuildingPrefab;
 
     public int groundLayer;
+    public int buildingsLayer;
+    int layerMask;
+    Ray ray;
+    RaycastHit hit;
+
+    BubbleMenu currentOpenBubbleMenu;
+
+
 
 
     // Update is called once per frame
@@ -39,23 +48,85 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(state == PlayerControllerState.BuildingMode)
+        switch (state)
         {
-            int layerMask = 1 << groundLayer;
+            case PlayerControllerState.Default:
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-            {
-                buildingSystem.PlanBuilding(hit.point);
-            }
+                if (Input.GetMouseButtonDown(0))
+                {
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("click");
-                buildingSystem.PlaceBuilding(hit.point);
+                    if (!Utility.HitsUI(Input.mousePosition))
+                    {
+                        if (currentOpenBubbleMenu != null) currentOpenBubbleMenu.Hide();
 
-            }
+                    }
+                    layerMask = 1 << buildingsLayer;
+
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+                    {
+                        //all buildings need to have buildingMenu attached
+                        BubbleMenu bubbleMenu = hit.collider.GetComponent<BubbleMenu>();
+                        if (bubbleMenu != null)
+                        {
+                            currentOpenBubbleMenu = bubbleMenu;
+                            currentOpenBubbleMenu.Show();
+                        }
+                    }
+                }
+                break;
+
+            case PlayerControllerState.BuildingMode:
+
+                layerMask = 1 << groundLayer;
+
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+                {
+                    buildingSystem.PlanBuilding(hit.point);
+                }
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("click");
+                    buildingSystem.PlaceBuilding(hit.point);
+                }
+
+                break;
+
+            case PlayerControllerState.EconomyManagement:
+
+                break;
         }
+    }
+
+    public void StartPlaningBuilding(BuildingData building)
+    {
+        state = PlayerControllerState.BuildingMode;
+        buildingSystem.StartPlaning(building.placerPrefab);
+        if (currentOpenBubbleMenu != null) currentOpenBubbleMenu.Hide();
+
+
+    }
+
+    public void StopPlaningBuilding()
+    {
+        state = PlayerControllerState.Default;
+        buildingSystem.StopPlaning();
+
+    }
+
+    public void EnterEconomyMenagementMode()
+    {
+        state = PlayerControllerState.EconomyManagement;
+        if (currentOpenBubbleMenu != null) currentOpenBubbleMenu.Hide();
+
+    }
+
+    public void ExitEconomyMenagementMode()
+    {
+        state = PlayerControllerState.Default;
+
     }
 }

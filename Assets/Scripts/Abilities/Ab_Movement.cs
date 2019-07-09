@@ -42,7 +42,7 @@ public class Ab_Movement : Ability
             {
                 if (targetToLookAt != null)
                 {
-                    RotateTo(targetToLookAt.position - transform.position, Time.time);
+                    RotateTo(targetToLookAt.position - transform.position);
                 }
             }
         }
@@ -50,13 +50,14 @@ public class Ab_Movement : Ability
 
 
     //sets the agent to rotate 
-    public void RotateTo(Vector3 direction, float time)
+    public void RotateTo(Vector3 direction)
     {
+        float deltaTime = Time.time - lastRotationTime;
         direction.y = 0;
         Quaternion desiredLookRotation = Quaternion.LookRotation(direction);
         //because we want the same speed as the agent, which has its angular speed saved as degrees per second we use the rotaate towards function
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredLookRotation, angularSpeed * time - lastRotationTime);
-        lastRotationTime = time;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredLookRotation, angularSpeed * deltaTime );
+        lastRotationTime = Time.time;
     }
 
     //for now simple moveTo without surface ship or flying

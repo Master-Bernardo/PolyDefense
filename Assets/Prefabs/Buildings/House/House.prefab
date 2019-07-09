@@ -88,7 +88,6 @@ GameObject:
   - component: {fileID: 2015036031972896354}
   - component: {fileID: 3595939239500897156}
   - component: {fileID: 441000406721039929}
-  - component: {fileID: 5234778784734608765}
   - component: {fileID: 5597385122328951912}
   - component: {fileID: 2789431006443624004}
   m_Layer: 10
@@ -129,7 +128,6 @@ MonoBehaviour:
   teamID: 0
   abilities:
   - {fileID: 441000406721039929}
-  - {fileID: 5234778784734608765}
   buildingData: {fileID: 11400000, guid: 5bf1bd18b2430f94a95290a2c8eb0756, type: 2}
 --- !u!114 &441000406721039929
 MonoBehaviour:
@@ -143,25 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29605c1889aeaff4f836c669ec74d3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationLimit: 5
---- !u!114 &5234778784734608765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7230490034040119710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ba4cfc7bb480dd4e8a1f4a0ccbc394e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  active: 1
-  populationSpawnInterval: 1
-  nextPopulationSpawnTime: 0
-  spawnPoint: {fileID: 4176367021838185609}
-  workerPrefab: {fileID: 3900957072361315647, guid: dba773a3c7378d642b7015a63e3c4304,
-    type: 3}
+  populationLimit: 3
 --- !u!65 &5597385122328951912
 BoxCollider:
   m_ObjectHideFlags: 0

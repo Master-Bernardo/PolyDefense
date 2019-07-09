@@ -63,21 +63,8 @@ public class PlayerManager : MonoBehaviour
     {
         UpdateUIRessources();
         UpdateUIPopulation();
-
     }
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            AddRessource(RessourceType.fer, 15);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            if (HasRessource(RessourceType.fer, 5)) RemoveRessource(RessourceType.fer, 5);
-        }
-    }
 
     //checks if we can spawn this unit with the specified populationValue - some bigger units consume more than 1 population
     public bool SpawnPossible(int populationValue)
