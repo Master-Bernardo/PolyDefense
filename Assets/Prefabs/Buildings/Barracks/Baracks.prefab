@@ -444,6 +444,7 @@ MonoBehaviour:
   - {fileID: 4175499010010618577}
   buildingData: {fileID: 11400000, guid: 983669e8674dddf4a90c166b6cbba38a, type: 2}
   width: 4
+  buildingType: 0
 --- !u!114 &4175499010010618577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +469,7 @@ MonoBehaviour:
   currentUnitRecruitmentEndTime: 0
   peopleInBarracks: []
   currentlyNeededPeople: 0
+  spawnPoint: {fileID: 4176367021838185609}
 --- !u!65 &5597385122328951912
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -535,7 +537,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8015204731886334436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.76}
+  m_LocalPosition: {x: -0.13, y: 0.49, z: 4.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2015036031972896354}
@@ -548,46 +550,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2015036031972896354}
     m_Modifications:
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: unitID
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: IQueueHolderGO
-      value: 
-      objectReference: {fileID: 7230490034040119710}
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: onLmb
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: onRmb
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: onLmbAndShift
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: onRmbAndShift
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: barracks
-      value: 
-      objectReference: {fileID: 4175499010010618577}
-    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: queueHolderGO
-      value: 
-      objectReference: {fileID: 7230490034040119710}
     - target: {fileID: 1013998590731799456, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
       propertyPath: m_Name
@@ -764,6 +726,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4175499010010618577}
     - target: {fileID: 7156659753631844973, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: queueHolderGO
+      value: 
+      objectReference: {fileID: 7230490034040119710}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: unitID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: IQueueHolderGO
+      value: 
+      objectReference: {fileID: 7230490034040119710}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onLmb
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onRmb
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onLmbAndShift
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onRmbAndShift
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: barracks
+      value: 
+      objectReference: {fileID: 4175499010010618577}
+    - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
       propertyPath: queueHolderGO
       value: 

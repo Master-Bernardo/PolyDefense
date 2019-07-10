@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BuildingType
+{
+    Economy,
+    Defense,
+    Other
+}
 
 public class Building : GameEntity, IDamageable<float>
 {
     public BuildingData buildingData;
     float currentHealth;
     public float width;
+    public BuildingType buildingType;   
 
 
 

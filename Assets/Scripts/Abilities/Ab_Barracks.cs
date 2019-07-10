@@ -43,6 +43,8 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
     public HashSet<Ab_Worker> peopleOnTheirWayToBarracks = new HashSet<Ab_Worker>();
     public int currentlyNeededPeople;
 
+    public Transform spawnPoint;
+
 
     Queue<RecruitmentQueueElement> unitsQueue = new Queue<RecruitmentQueueElement>();
 
@@ -201,7 +203,13 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
             Destroy(peopleInBarracks[0]);
             peopleInBarracks.RemoveAt(0);
         }
+
+        GameObject spawnedUnit = Instantiate(currentRecruitedUnit.prefab, spawnPoint.position, spawnPoint.rotation);
+        Ab_FriendlyMeleeFighter fighter = spawnedUnit.GetComponent<Ab_FriendlyMeleeFighter>();
+        if (fighter != null) fighter.SetSpawnedBuilding(transform);
+
         currentRecruitedUnit = null;
+
 
     }
 

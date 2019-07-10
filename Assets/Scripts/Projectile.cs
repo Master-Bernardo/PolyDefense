@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
+    public float damage;
     public float startVelocity;
     Rigidbody rb;
 
@@ -19,6 +20,9 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //solve this with I Damageable
-       // if(collision)
+        // if(collision)
+        IDamageable<float> damageable = collision.gameObject.GetComponent<IDamageable<float>>();
+
+        if (damageable != null) damageable.TakeDamage(damage);
     }
 }

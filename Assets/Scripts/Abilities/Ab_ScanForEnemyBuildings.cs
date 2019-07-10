@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-//maybe change this to sensing with scanning obptions or let all the scanning options derive from snesing later
-public class Ab_ScanForEnemyUnits : Ability
+public class Ab_ScanForEnemyBuildings : Ability
 {
-    public int unitsLayer;
+    public int buildingsLayer;
+    public BuildingType buidingToScanFor;
 
-    public HashSet<GameEntity> enemiesInRange = new HashSet<GameEntity>();
-    public GameEntity nearestEnemy;
-    
+    public HashSet<GameEntity> buildingsInRange = new HashSet<GameEntity>();
+    public GameEntity nearestBuilding;
 
     public float scanInterval;
     public float scanRadius;
@@ -33,35 +31,35 @@ public class Ab_ScanForEnemyUnits : Ability
 
     void Scan()
     {
-        int layerMask = 1 <<unitsLayer;
+        int layerMask = 1 << buildingsLayer;
 
         Collider[] visibleColliders = Physics.OverlapSphere(transform.position, scanRadius, layerMask);
-        enemiesInRange.Clear();
+        buildingsInRange.Clear();
 
         for (int i = 0; i < visibleColliders.Length; i++)
         {
-            GameEntity currentEntity = visibleColliders[i].GetComponent<GameEntity>();
-
-            if(currentEntity.teamID != myEntity.teamID)
+            Building currentEntity = visibleColliders[i].GetComponent<Building>();
+            if (currentEntity.teamID != myEntity.teamID && currentEntity.buildingType == BuildingType.Defense)
             {
-                enemiesInRange.Add(currentEntity);
+                buildingsInRange.Add(currentEntity);
             }
         }
 
         //get the nearest
         float nearestDistance = Mathf.Infinity;
-        nearestEnemy = null;
+        nearestBuilding = null;
 
-        foreach(GameEntity enemy in enemiesInRange)
+        foreach (GameEntity enemy in buildingsInRange)
         {
             float currentDistance = (transform.position - enemy.transform.position).sqrMagnitude;
             if (currentDistance < nearestDistance)
             {
                 nearestDistance = currentDistance;
-                nearestEnemy = enemy;
+                nearestBuilding = enemy;
             }
         }
 
 
     }
+
 }
