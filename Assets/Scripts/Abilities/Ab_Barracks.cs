@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public interface IDepositioneable<T>
 {
     void DepositionWorker(T worker);
 
     void OnWorkerGetsTaksAssigned(T worker);
 }
+
+public interface IQueueHolder<T, F>
+{
+    void AddElementToQueue(T element, F number);
+}
+
 
 public class RecruitmentQueueElement
 {
@@ -22,9 +29,11 @@ public class RecruitmentQueueElement
 }
 
 //like spawner, but it only spawns if we tell it to spawn
-public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>
+public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<int, int>
 {
     public UnitData[] units;
+    [Tooltip("needs to be the same length as units")]
+    public BubbleMenuButtonStackable[] unitsUIButtons; 
 
     public Building building;
     public float recruitmentSpeed;
@@ -34,7 +43,13 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>
     public HashSet<Ab_Worker> peopleOnTheirWayToBarracks = new HashSet<Ab_Worker>();
     public int currentlyNeededPeople;
 
+
     Queue<RecruitmentQueueElement> unitsQueue = new Queue<RecruitmentQueueElement>();
+
+   public void AddElementToQueue(int unitID, int number)
+    {
+        AddUnitToRecruitmentQueue(unitID, number);
+    }
 
     public void AddUnitToRecruitmentQueue(int id, int number)
     {
@@ -72,8 +87,20 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>
         
     }
 
+    public override void SetUpAbility(GameEntity entity)
+    {
+        for (int i = 0; i < unitsUIButtons.Length; i++)
+        {
+            unitsUIButtons[i].SetUpUI(units[i]);
+        }
+    }
+
     public override void UpdateAbility()
     {
+
+
+
+
         //how to take care of this reruitment queue
 
         //check if we need to get more people into the building
@@ -125,6 +152,31 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>
         {
             Debug.Log("queue peek: " + unitsQueue.Peek().unit + " " + unitsQueue.Peek().number);
         }
+
+
+        //update ui buttons
+
+        Dictionary<UnitData, int> conversionDict = new Dictionary<UnitData, int>();
+
+        for (int i = 0; i < units.Length; i++)
+        {
+            conversionDict.Add(units[i], 0);
+        }
+
+        foreach(RecruitmentQueueElement element in unitsQueue)
+        {
+            conversionDict[element.unit] += element.number;
+        }
+       // Debug.Log("-----------");
+        int index = 0;//workaround
+        foreach(KeyValuePair<UnitData,int> pair in conversionDict)
+        {
+            //Debug.Log("unit: " + pair.Key.unitName + " number: " + pair.Value);
+            unitsUIButtons[index].UpdateUI(pair.Value);
+            index++;
+        }
+       // Debug.Log("-----------");
+
     }
 
     void StartRecruitment()
@@ -138,7 +190,11 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>
     void FinishRecruitment()
     {
         Debug.Log("finishedRecruitment: " + "name: " + currentRecruitedUnit.unitName);
+
+        unitsQueue.Peek().number--;
+        
         if (unitsQueue.Peek().number == 0) unitsQueue.Dequeue();
+
         currentlyNeededPeople -= currentRecruitedUnit.populationValue;
         for (int i = 0; i < currentRecruitedUnit.populationValue; i++)
         {           

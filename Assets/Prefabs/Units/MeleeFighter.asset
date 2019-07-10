@@ -19,5 +19,5 @@ MonoBehaviour:
   cost:
   - type: 0
     value: 20
-  menuImage: {fileID: 0}
+  menuImage: {fileID: 21300000, guid: 8b5c67b48a972534b9f801367527442b, type: 3}
   prefab: {fileID: 0}
