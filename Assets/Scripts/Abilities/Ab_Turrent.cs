@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Ab_Turrent : Ability
 {
@@ -10,7 +11,8 @@ public class Ab_Turrent : Ability
     public float damage;
 
     public float turningSpeed;
-    public Transform turrenRotatingBarrel;
+    public Transform turrentTower; //rotates to the sides
+    public Transform turrentBarrel; //rotates up and down
     /*public float maxXAngle;
     public float minXAngle;
     public float maxYAngle;
@@ -24,6 +26,7 @@ public class Ab_Turrent : Ability
 
     public override void SetUpAbility(GameEntity entity)
     {
+        base.SetUpAbility(entity);
         nextShootingTime = Time.time + Random.Range(0, shootingInterval);
     }
 
@@ -31,19 +34,32 @@ public class Ab_Turrent : Ability
     {
         if (scanForEnemies.nearestEnemy != null)
         {
-            RotateTowards(scanForEnemies.nearestEnemy.transform.position);
+            NavMeshAgent agent = scanForEnemies.nearestEnemy.GetComponent<NavMeshAgent>();
+            //TODO calculate exact position by measuring distance of barrel travel time aginst projectile speed etc - add aimingSPeed random rotation before shooting
+            RotateTowards(agent.transform.position + agent.velocity*0);
             if (Time.time > nextShootingTime)
             {
                 nextShootingTime = Time.time + shootingInterval;
-                Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+                Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation).GetComponent<Projectile>();
+                projectile.projectileTeamID = myEntity.teamID;
             }
         }
     }
 
-    void RotateTowards(Vector3 position)
+    void RotateTowards(Vector3 targetPosition)
     {
-        Quaternion desiredLookRotation = Quaternion.LookRotation(position - turrenRotatingBarrel.transform.position);
-        turrenRotatingBarrel.transform.rotation = Quaternion.RotateTowards(turrenRotatingBarrel.transform.rotation, desiredLookRotation, turningSpeed);
+        //1.rotate tower to the sides
+        Vector3 desiredTowerDirection = (targetPosition - turrentTower.position);
+        desiredTowerDirection.y = 0;
+        Quaternion desiredTowerRotation = Quaternion.LookRotation(desiredTowerDirection);
+        turrentTower.rotation = Quaternion.RotateTowards(turrentTower.transform.rotation, desiredTowerRotation, turningSpeed);
+
+        //2. rotate the barrel up and down 
+        Vector3 desiredBarrelDirection = turrentBarrel.InverseTransformDirection((targetPosition - turrentBarrel.position));
+        desiredBarrelDirection.x = 0;
+        desiredBarrelDirection.z = 0;
+        Quaternion desiredBarrelRotation = Quaternion.LookRotation(turrentBarrel.TransformDirection(desiredBarrelDirection));
+        turrentBarrel.rotation = Quaternion.RotateTowards(turrentBarrel.transform.rotation, desiredBarrelRotation, turningSpeed);
 
         //now cap the rotation;
         /*Vector3 cappedAngles;

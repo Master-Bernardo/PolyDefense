@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public interface IDamageable<T>
 {
@@ -12,6 +13,7 @@ public class GameEntity : MonoBehaviour
 {
     public int teamID;
     public Ability[] abilities;
+    public UnityEvent onDieEvent;
 
     private void Start()
     {
@@ -31,6 +33,7 @@ public class GameEntity : MonoBehaviour
 
     public virtual void OnDie()
     {
+        onDieEvent.Invoke();
         foreach (Ability ability in abilities)
         {
             ability.OnDie();

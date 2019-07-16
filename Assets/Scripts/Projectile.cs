@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
 {
     public float damage;
     public float startVelocity;
+    public int projectileTeamID; //who shoot this projectile
     Rigidbody rb;
 
     // Start is called before the first frame update
@@ -23,6 +24,34 @@ public class Projectile : MonoBehaviour
         // if(collision)
         IDamageable<float> damageable = collision.gameObject.GetComponent<IDamageable<float>>();
 
-        if (damageable != null) damageable.TakeDamage(damage);
+        if (damageable != null)
+        {
+            // check who did we hit, check if he has an gameEntity
+            GameEntity entity = collision.gameObject.GetComponent<GameEntity>();
+            if (entity != null)
+            {
+                if (!Settings.Instance.friendlyFire)
+                {
+                    DiplomacyStatus diplomacyStatus = Settings.Instance.GetDiplomacyStatus(projectileTeamID, entity.teamID);
+                    if(diplomacyStatus == DiplomacyStatus.War)
+                    {
+                        damageable.TakeDamage(damage);
+                    }
+
+                }
+                else
+                {
+                    damageable.TakeDamage(damage);
+                }
+
+            }
+            else
+            {
+                damageable.TakeDamage(damage);
+            }
+        }
+
+        Destroy(gameObject);
+
     }
 }

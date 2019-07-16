@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8667846328000672083}
   - component: {fileID: 1803069548631444304}
   m_Layer: 10
-  m_Name: Cube
+  m_Name: BarrelModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,11 +26,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388528935784265905}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.528}
-  m_LocalScale: {x: 0.17206, y: 1, z: 0.3880327}
+  m_LocalPosition: {x: 0, y: 0.068, z: 0.61}
+  m_LocalScale: {x: 0.40895, y: 0.30688, z: 1.2589}
   m_Children: []
-  m_Father: {fileID: 3479809254663689367}
-  m_RootOrder: 0
+  m_Father: {fileID: 8472196466810807483}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8667846328000672083
 MeshFilter:
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 6532139316064019493}
   - component: {fileID: 3442675673813391518}
   m_Layer: 10
-  m_Name: Turrent
+  m_Name: TurrentModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,13 +102,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2547746026657382556}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.83, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 0.2, z: 1.5}
-  m_Children:
-  - {fileID: 1981940558631847641}
-  - {fileID: 3651515759267753988}
-  m_Father: {fileID: 7330894552023068104}
+  m_Children: []
+  m_Father: {fileID: 3969649539233598638}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6532139316064019493
@@ -156,6 +154,38 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &5079501490428916129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3969649539233598638}
+  m_Layer: 0
+  m_Name: Turrent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3969649539233598638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079501490428916129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.83, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8472196466810807483}
+  - {fileID: 3479809254663689367}
+  m_Father: {fileID: 7330894552023068104}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5652278797175762679
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +214,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 436423740538568660}
-  - {fileID: 3479809254663689367}
+  - {fileID: 3969649539233598638}
   m_Father: {fileID: 1202317103440095983}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -211,12 +241,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7233378783169508713}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.05000025, z: 0.91400003}
-  m_LocalScale: {x: 0.6666667, y: 5, z: 0.6666667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 3479809254663689367}
-  m_RootOrder: 1
+  m_Father: {fileID: 8472196466810807483}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7293016550774429381
 GameObject:
@@ -295,6 +325,38 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &7692029340301295977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8472196466810807483}
+  m_Layer: 0
+  m_Name: Barrel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8472196466810807483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7692029340301295977}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.08863382, y: -0.03, z: 0.56}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children:
+  - {fileID: 3651515759267753988}
+  - {fileID: 1981940558631847641}
+  m_Father: {fileID: 3969649539233598638}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8002467667371992339
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +409,14 @@ MonoBehaviour:
   abilities:
   - {fileID: 1077487827493143449}
   - {fileID: 8873417317387827718}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   buildingData: {fileID: 11400000, guid: 0ca9f09ef753fb34188200008670cef7, type: 2}
+  width: 0
+  buildingType: 0
 --- !u!114 &1077487827493143449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +448,8 @@ MonoBehaviour:
   shootingInterval: 1
   damage: 5
   turningSpeed: 2
-  turrenRotatingBarrel: {fileID: 3479809254663689367}
+  turrentTower: {fileID: 3969649539233598638}
+  turrentBarrel: {fileID: 8472196466810807483}
   projectilePrefab: {fileID: 1854935314691642160, guid: 09ab7702bef103040a59349a2b4a3f7c,
     type: 3}
   projectileSpawnPoint: {fileID: 3651515759267753988}

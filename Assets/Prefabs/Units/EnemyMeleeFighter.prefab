@@ -197,9 +197,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1362219360397472216}
   - component: {fileID: 651446857378753757}
+  - component: {fileID: 8393244566100764311}
   - component: {fileID: 1362219360397472218}
   - component: {fileID: -7568736579957523176}
-  - component: {fileID: 8393244566100764311}
+  - component: {fileID: 5359170639203182714}
   - component: {fileID: 1362219360397472213}
   - component: {fileID: 1710908285939122047}
   m_Layer: 11
@@ -241,8 +242,29 @@ MonoBehaviour:
   - {fileID: 1362219360397472218}
   - {fileID: 8393244566100764311}
   - {fileID: -7568736579957523176}
+  - {fileID: 5359170639203182714}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   unitData: {fileID: 11400000, guid: a68991e74bae639498fa65df03b37d01, type: 2}
   width: 0.5
+--- !u!114 &8393244566100764311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362219360397472217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab423d827aa02ae49910b81c70592db2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 1362219360397472218}
+  sensing: {fileID: -7568736579957523176}
+  weapon: {fileID: 5359170639203182714}
 --- !u!114 &1362219360397472218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +294,7 @@ MonoBehaviour:
   nearestEnemy: {fileID: 0}
   scanInterval: 0.5
   scanRadius: 15
---- !u!114 &8393244566100764311
+--- !u!114 &5359170639203182714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -281,15 +303,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1362219360397472217}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab423d827aa02ae49910b81c70592db2, type: 3}
+  m_Script: {fileID: 11500000, guid: 48e2aea0dac85e9438a18a165d5bdcc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 1362219360397472218}
-  sensing: {fileID: -7568736579957523176}
-  buildingsSensing: {fileID: 0}
-  meleeDistance: 1.5
-  meleeAttackInterval: 1
+  meleeRange: 2
   meleeDamage: 5
+  meleeAttackInterval: 1
 --- !u!195 &1362219360397472213
 NavMeshAgent:
   m_ObjectHideFlags: 0

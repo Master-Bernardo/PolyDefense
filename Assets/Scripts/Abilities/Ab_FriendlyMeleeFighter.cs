@@ -6,6 +6,7 @@ public class Ab_FriendlyMeleeFighter : Ability
 {
     public Ab_Movement movement;
     public Ab_ScanForEnemyUnits sensing;
+    public Ab_MeleeWeapon weapon;
 
 
     public Transform buildingToGoAround;
@@ -14,10 +15,6 @@ public class Ab_FriendlyMeleeFighter : Ability
     float nextIdleMovementTime;
     public float maxDistanceToBaseForWander;
 
-    public float meleeDistance;
-    public float meleeAttackInterval;
-    float nextMeleeAttackTime;
-    public float meleeDamage;
 
     enum DefenderState
     {
@@ -32,7 +29,6 @@ public class Ab_FriendlyMeleeFighter : Ability
     {
         base.SetUpAbility(entity);
         nextIdleMovementTime = Random.Range(0, idleMovementInterval);
-        meleeDistance *= meleeDistance;
         buildingToGoAround = transform; //workaround - to let the work if set into scene by hand
     }
 
@@ -58,7 +54,6 @@ public class Ab_FriendlyMeleeFighter : Ability
                     wanderPoint.y = transform.position.y;
 
                     wanderPoint += transform.forward * 4 + transform.position;
-
                     Vector3 basePosition = buildingToGoAround.position;
                     //if he would stray off to far, bring him back to base
                     if (Vector3.Distance(basePosition, wanderPoint) > maxDistanceToBaseForWander)
@@ -75,8 +70,10 @@ public class Ab_FriendlyMeleeFighter : Ability
 
                 if (sensing.nearestEnemy != null)
                 {
-                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude < meleeDistance)
+                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude < weapon.meleeRange)
                     {
+                        movement.Stop();
+
                         state = DefenderState.InMeleeDistance;
                     }
                     else
@@ -95,17 +92,15 @@ public class Ab_FriendlyMeleeFighter : Ability
 
                 if (sensing.nearestEnemy != null)
                 {
-                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude > meleeDistance)
+                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude > weapon.meleeRange)
                     {
                         state = DefenderState.MovingToEnemy;
                     }
                     else
                     {
-                        if (Time.time > nextMeleeAttackTime)
+                        if (weapon.CanAttack())
                         {
-                            nextMeleeAttackTime = Time.time + meleeAttackInterval;
-                            sensing.nearestEnemy.GetComponent<IDamageable<float>>().TakeDamage(meleeDamage);
-                            //Debug.Log("test: " + sensing.nearestEnemy.GetComponent<IDamageable<float>>());
+                            weapon.Attack(sensing.nearestEnemy.GetComponent<IDamageable<float>>());
                         }
                     }
                 }

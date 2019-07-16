@@ -6,16 +6,12 @@ public class Ab_EnemyMeleeFighter : Ability
 {
     public Ab_Movement movement;
     public Ab_ScanForEnemyUnits sensing;
-    public Ab_ScanForEnemyBuildings buildingsSensing;
+    //public Ab_ScanForEnemyBuildings buildingsSensing;
+    public Ab_MeleeWeapon weapon;
 
 
     Transform baseBuilding;
     //some idle movement
-
-    public float meleeDistance;
-    public float meleeAttackInterval;
-    float nextMeleeAttackTime;
-    public float meleeDamage;
 
     enum EnemyState
     {
@@ -30,7 +26,6 @@ public class Ab_EnemyMeleeFighter : Ability
     public override void SetUpAbility(GameEntity entity)
     {
         base.SetUpAbility(entity);
-        meleeDistance *= meleeDistance;
     }
 
     public override void UpdateAbility()
@@ -55,8 +50,9 @@ public class Ab_EnemyMeleeFighter : Ability
 
                 if (sensing.nearestEnemy != null)
                 {
-                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude < meleeDistance)
+                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude < weapon.meleeRange)
                     {
+                        movement.Stop();
                         state = EnemyState.InMeleeDistance;
                     }
                     else
@@ -75,17 +71,13 @@ public class Ab_EnemyMeleeFighter : Ability
 
                 if (sensing.nearestEnemy != null)
                 {
-                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude > meleeDistance)
+                    if ((sensing.nearestEnemy.transform.position - transform.position).sqrMagnitude > weapon.meleeRange)
                     {
                         state = EnemyState.MovingToEnemy;
                     }
                     else
                     {
-                        if (Time.time > nextMeleeAttackTime)
-                        {
-                            nextMeleeAttackTime = Time.time + meleeAttackInterval;
-                            sensing.nearestEnemy.GetComponent<IDamageable<float>>().TakeDamage(meleeDamage);
-                        }
+                        if (weapon.CanAttack()) weapon.Attack(sensing.nearestEnemy.GetComponent<IDamageable<float>>());
                     }
                 }
                 else
@@ -101,12 +93,11 @@ public class Ab_EnemyMeleeFighter : Ability
                 {
                     state = EnemyState.MovingToEnemy;
                 }
-                else if ((BuildingSystem.Instance.playersBaseLocation.position - transform.position).sqrMagnitude < meleeDistance)
+                else if ((BuildingSystem.Instance.playersBaseLocation.position - transform.position).sqrMagnitude < weapon.meleeRange)
                 {
-                    if (Time.time > nextMeleeAttackTime)
+                    if (weapon.CanAttack())
                     {
-                        nextMeleeAttackTime = Time.time + meleeAttackInterval;
-                        BuildingSystem.Instance.playersBaseLocation.gameObject.GetComponent<IDamageable<float>>().TakeDamage(meleeDamage);
+                        weapon.Attack(BuildingSystem.Instance.playersBaseLocation.gameObject.GetComponent<IDamageable<float>>());
                     }
                 }
 

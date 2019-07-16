@@ -13,6 +13,7 @@ public class Ab_Base : Ability, IWorkerAssigneable<int>
     int currentWorkerNumber = 0;
     public int workerCapacity;
 
+
     public override void SetUpAbility(GameEntity entity)
     {
         BuildingSystem.Instance.SetBaseBuilding(this);

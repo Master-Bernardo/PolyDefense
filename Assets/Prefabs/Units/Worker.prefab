@@ -241,7 +241,12 @@ MonoBehaviour:
   - {fileID: 1362219360397472212}
   - {fileID: 1362219360397472218}
   - {fileID: 4450272027953702259}
-  unitData: {fileID: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  unitData: {fileID: 11400000, guid: 7bf08deac2b98d044a6d3d0dc8aad2b2, type: 2}
   width: 0
 --- !u!114 &1362219360397472212
 MonoBehaviour:

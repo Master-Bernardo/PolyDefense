@@ -197,10 +197,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1362219360397472216}
   - component: {fileID: 7146605283188997115}
+  - component: {fileID: -7383860770335749763}
   - component: {fileID: 1362219360397472218}
   - component: {fileID: 4450272027953702259}
-  - component: {fileID: -7383860770335749763}
   - component: {fileID: -7568736579957523176}
+  - component: {fileID: 3979987531450253211}
   - component: {fileID: 1362219360397472213}
   - component: {fileID: 1710908285939122047}
   m_Layer: 11
@@ -243,8 +244,32 @@ MonoBehaviour:
   - {fileID: 4450272027953702259}
   - {fileID: -7383860770335749763}
   - {fileID: -7568736579957523176}
+  - {fileID: 3979987531450253211}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   unitData: {fileID: 11400000, guid: a68991e74bae639498fa65df03b37d01, type: 2}
   width: 0.5
+--- !u!114 &-7383860770335749763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362219360397472217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d43ceb229e3a442b68a4eb7371702a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 1362219360397472218}
+  sensing: {fileID: -7568736579957523176}
+  weapon: {fileID: 3979987531450253211}
+  buildingToGoAround: {fileID: 0}
+  idleMovementInterval: 1
+  maxDistanceToBaseForWander: 20
 --- !u!114 &1362219360397472218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,25 +296,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   populationValue: 1
---- !u!114 &-7383860770335749763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1362219360397472217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d43ceb229e3a442b68a4eb7371702a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movement: {fileID: 1362219360397472218}
-  sensing: {fileID: -7568736579957523176}
-  idleMovementInterval: 1
-  maxDistanceToBaseForWander: 20
-  meleeDistance: 1.5
-  meleeAttackInterval: 1
-  meleeDamage: 5
 --- !u!114 &-7568736579957523176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,6 +312,21 @@ MonoBehaviour:
   nearestEnemy: {fileID: 0}
   scanInterval: 0.5
   scanRadius: 15
+--- !u!114 &3979987531450253211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362219360397472217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e2aea0dac85e9438a18a165d5bdcc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meleeRange: 2
+  meleeDamage: 5
+  meleeAttackInterval: 1
 --- !u!195 &1362219360397472213
 NavMeshAgent:
   m_ObjectHideFlags: 0
