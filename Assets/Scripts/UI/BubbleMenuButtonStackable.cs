@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
 
+/*in the mobile version if we hold our finger on a button we get the option to set it to unendlich or set minus values or et info on this unit*/
 
 public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler
 {
@@ -33,12 +34,11 @@ public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("queueHolder: " + queueHolder);
         if(eventData.button == PointerEventData.InputButton.Left)
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                queueHolder.AddElementToQueue(unitID, onLmb);
+                queueHolder.AddElementToQueue(unitID, onLmbAndShift);
             }
             else if (Input.GetKey(KeyCode.LeftControl))
             {
@@ -53,12 +53,12 @@ public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                queueHolder.AddElementToQueue(unitID, onRmbAndShift);
+                queueHolder.RemoveElementFromQueue(unitID, onRmbAndShift);
 
             }
             else
             {
-                queueHolder.AddElementToQueue(unitID, onRmb);
+                queueHolder.RemoveElementFromQueue(unitID, onRmb);
             }
         }
     }

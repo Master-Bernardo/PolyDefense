@@ -24,7 +24,7 @@ public class Building : GameEntity, IDamageable<float>
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            OnDie();
+            Die();
         }
   
     }

@@ -11,25 +11,46 @@ public class Ab_Spawner : PassiveToogleableAbility
     public Transform spawnPoint;
     public GameObject workerPrefab;
 
+    bool reachedLimit;
+
     public override void SetUpAbility(GameEntity entity)
     {
         base.SetUpAbility(entity);
         nextPopulationSpawnTime = Time.time + populationSpawnInterval;
+        reachedLimit = false;
     }
 
     public override void UpdateAbility()
     {
-        if (Time.time > nextPopulationSpawnTime)
+        if (reachedLimit)
         {
             if (PlayerManager.Instance.SpawnPossible(1))
             {
-                //this should happen if the unit spawns
                 nextPopulationSpawnTime = Time.time + populationSpawnInterval;
-                GameObject instantiatedWorker = Instantiate(workerPrefab);
-                instantiatedWorker.transform.position = spawnPoint.position;
+                reachedLimit = false;
             }
-           
         }
+        else
+        {
+            if (Time.time > nextPopulationSpawnTime)
+            {
+                if (PlayerManager.Instance.SpawnPossible(1))
+                {
+                    //this should happen if the unit spawns
+                    nextPopulationSpawnTime = Time.time + populationSpawnInterval;
+                    GameObject instantiatedWorker = Instantiate(workerPrefab);
+                    instantiatedWorker.transform.position = spawnPoint.position;
+                }
+                else
+                {
+                    reachedLimit = true;
+                }
+
+            }
+        }
+        
+
+        
     }
 }
 

@@ -23,21 +23,21 @@ public class Ressource : GameEntity
         if (amount > currentRessourceAmount)
         {
             currentRessourceAmount = 0;
-            OnDie();
+            Die();
             return currentRessourceAmount;
         }
         else
         {
             currentRessourceAmount -= amount;
-            if (currentRessourceAmount == 0) OnDie();
+            if (currentRessourceAmount == 0) Die();
             return amount;
         }
     }
 
-    public override void OnDie()
+    public override void Die()
     {
         RessourcesManager.Instance.RemoveRessource(this);
-        base.OnDie();
+        base.Die();
 
     }
 

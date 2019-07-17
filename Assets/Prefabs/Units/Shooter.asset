@@ -22,4 +22,4 @@ MonoBehaviour:
   - type: 1
     value: 20
   menuImage: {fileID: 21300000, guid: cf52beb07ee2146458774615f8564f4b, type: 3}
-  prefab: {fileID: 0}
+  prefab: {fileID: 1362219360397472217, guid: abeb935dc5845164e9ac9561faaf626a, type: 3}

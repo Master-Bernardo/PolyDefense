@@ -412,7 +412,10 @@ public class Ab_Worker : Ability
 
     public void AssignToIdle()
     {
+        Debug.Log("im idle");
         state = WorkerState.Idle;
+        nextIdleMovementTime = 0;
+        Debug.Log("now the state is: " + state);
         PlayerManager.Instance.AddIdleWorker(this);
         nextIdleMovementTime = Random.Range(0, idleMovementInterval);
     }

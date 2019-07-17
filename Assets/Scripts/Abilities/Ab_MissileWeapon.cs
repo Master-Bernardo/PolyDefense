@@ -12,26 +12,25 @@ public class Ab_MissileWeapon : Ability
     public GameObject projectilePrefab;
     public Transform projectileSpawnPoint;
 
-    Vector3 initialLookVector;
+    public Transform parent;
     bool aiming = false;
-    Transform currentTarget;
+    GameEntity currentTarget;
 
     public override void SetUpAbility(GameEntity entity)
     {
         base.SetUpAbility(entity);
-        nextShootingTime = Time.time + Random.Range(0, shootingInterval);
-        initialLookVector = transform.forward;
+        nextShootingTime = Time.time + shootingInterval;
     }
 
     public override void UpdateAbility()
     {
         if (aiming)
         {
-            RotateTowards(currentTarget.position - transform.position);
+          if(currentTarget!=null)  RotateTowards(currentTarget.GetPositionForAiming() - transform.position);
         }
         else
         {
-            RotateTowards(initialLookVector);
+            RotateTowards(parent.forward);
         }
     }
 
@@ -39,6 +38,7 @@ public class Ab_MissileWeapon : Ability
     {
         Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation).GetComponent<Projectile>();
         projectile.projectileTeamID = myEntity.teamID;
+        nextShootingTime = Time.time + shootingInterval;
     }
 
     public bool CanShoot()
@@ -54,17 +54,17 @@ public class Ab_MissileWeapon : Ability
 
     }
 
-    public void AimAt(Transform target)
+    public void AimAt(GameEntity target)
     {
         aiming = true;
         currentTarget = target;
 
     }
 
-    public void AimAt(Vector3 position)
+    /*public void AimAt(Vector3 position)
     {
         aiming = true;
-    }
+    }*/
 
     public void StopAiming()
     {

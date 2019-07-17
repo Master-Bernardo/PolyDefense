@@ -10,4 +10,10 @@ public class Ab_Populator : Ability
     {
         PlayerManager.Instance.RaisePopulation(populationValue);
     }
+
+    public override void OnDie()
+    {
+        Debug.Log("on dieee");
+        PlayerManager.Instance.LowerPopulation(populationValue);
+    }
 }

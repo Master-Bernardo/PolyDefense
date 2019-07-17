@@ -67,7 +67,7 @@ public class BuildingSystem : MonoBehaviour
     #endregion
 
 
-    #region building placement
+    #region Building placement
 
     public void StartPlaning(GameObject currentBuildingPlacerGO)
     {

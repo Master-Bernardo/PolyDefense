@@ -49,13 +49,13 @@ public class BuildingInConstruction : GameEntity, IDamageable<float>
         if (currentConstructionPoints <= 0)
         {
             currentConstructionPoints = 0;
-            OnDie();
+            Die();
         }
     }
 
-    public override void OnDie()
+    public override void Die()
     {
-        base.OnDie();
+        base.Die();
         BuildingSystem.Instance.RemoveBuildingWaitingForConstruction(this);
 
     }

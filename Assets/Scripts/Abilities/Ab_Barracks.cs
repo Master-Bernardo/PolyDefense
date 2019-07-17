@@ -13,6 +13,7 @@ public interface IDepositioneable<T>
 public interface IQueueHolder<T, F>
 {
     void AddElementToQueue(T element, F number);
+    void RemoveElementFromQueue(T element, F number);
 }
 
 
@@ -48,20 +49,16 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
 
     Queue<RecruitmentQueueElement> unitsQueue = new Queue<RecruitmentQueueElement>();
 
+    //if wr want to remove, we just use negative numbas?
    public void AddElementToQueue(int unitID, int number)
     {
-        AddUnitToRecruitmentQueue(unitID, number);
-    }
-
-    public void AddUnitToRecruitmentQueue(int id, int number)
-    {
-        UnitData unit = units[id];
+        UnitData unit = units[unitID];
 
         RecruitmentQueueElement elementContainingThisUnit = null;
 
         foreach (RecruitmentQueueElement element in unitsQueue)
         {
-            if(element.unit == unit)
+            if (element.unit == unit)
             {
                 elementContainingThisUnit = element;
             }
@@ -81,13 +78,80 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
 
         for (int i = 0; i < number * unit.populationValue; i++)
         {
-            if (PlayerManager.Instance.GetIdleWorkersNumber()>0)
+            if (PlayerManager.Instance.GetIdleWorkersNumber() > 0)
             {
                 PlayerManager.Instance.GetNearestIdleWorker(transform.position).AssignToDeposition(building);
             }
         }
-        
     }
+
+    public void RemoveElementFromQueue(int unitID, int number)
+    {
+        UnitData unit = units[unitID];
+
+        RecruitmentQueueElement elementContainingThisUnit = null;
+
+        foreach (RecruitmentQueueElement element in unitsQueue)
+        {
+            if (element.unit == unit)
+            {
+                elementContainingThisUnit = element;
+            }
+        }
+        elementContainingThisUnit.number -= number;
+
+        if(elementContainingThisUnit.number <= 0)
+        {
+            if(currentRecruitedUnit == elementContainingThisUnit.unit)
+            {
+                StopRecruitment();
+                unitsQueue.Dequeue();
+            }
+        }
+
+        currentlyNeededPeople -= number;
+
+        //we need to fire the workers - lets check if it enough to fire the ones which are currently on their way
+
+        int workersToFireLeft = number;
+
+        HashSet<Ab_Worker> workersToRemove = new HashSet<Ab_Worker>();
+
+        foreach(Ab_Worker worker in peopleOnTheirWayToBarracks)
+        {
+            if(workersToFireLeft > 0)
+            {
+                worker.AssignToIdle();
+                workersToFireLeft--;
+                workersToRemove.Add(worker);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        foreach (Ab_Worker worker in workersToRemove)
+        {
+            peopleOnTheirWayToBarracks.Remove(worker);
+        }
+
+
+
+        //if this is not enough, we need to release some workers which are already in the building
+        //backward for for remove
+        for (int i = workersToFireLeft-1; i >= 0; i--)
+        {
+            peopleInBarracks[i].AssignToIdle();
+            peopleInBarracks[i].gameObject.SetActive(true);
+
+            peopleInBarracks.RemoveAt(i);
+        }
+
+
+       
+    }
+
 
     public override void SetUpAbility(GameEntity entity)
     {
@@ -140,11 +204,11 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            AddUnitToRecruitmentQueue(0, 3);
+           // AddUnitToRecruitmentQueue(0, 3);
         }
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            AddUnitToRecruitmentQueue(1, 2);
+           // AddUnitToRecruitmentQueue(1, 2);
         }
         if (Input.GetKeyDown(KeyCode.V))
         {
@@ -189,8 +253,15 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
         currentUnitRecruitmentEndTime = Time.time + currentRecruitedUnit.recruitingPoints * recruitmentSpeed;
     }
 
+    void StopRecruitment()
+    {
+        currentRecruitedUnit = null;
+    }
+
     void FinishRecruitment()
     {
+        PlayerManager.Instance.RemoveRessources(currentRecruitedUnit.cost);
+
         Debug.Log("finishedRecruitment: " + "name: " + currentRecruitedUnit.unitName);
 
         unitsQueue.Peek().number--;
@@ -199,8 +270,8 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
 
         currentlyNeededPeople -= currentRecruitedUnit.populationValue;
         for (int i = 0; i < currentRecruitedUnit.populationValue; i++)
-        {           
-            Destroy(peopleInBarracks[0]);
+        {
+            peopleInBarracks[0].GetComponent<GameEntity>().Die();
             peopleInBarracks.RemoveAt(0);
         }
 
@@ -209,6 +280,8 @@ public class Ab_Barracks : Ability, IDepositioneable<Ab_Worker>, IQueueHolder<in
         if (fighter != null) fighter.SetSpawnedBuilding(transform);
 
         currentRecruitedUnit = null;
+
+
 
 
     }

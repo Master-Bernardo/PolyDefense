@@ -84,7 +84,7 @@ public class Ab_MissileAttacker : Ability
                     {
                         //move to a position perfectly in the shooting range
                         movement.MoveTo((transform.position - sensing.nearestEnemy.transform.position).normalized * (minimalShootingDistance + (maximalShootingDistance - minimalShootingDistance) / 2));
-                        weapon.AimAt(sensing.nearestEnemy.transform);
+                        weapon.AimAt(sensing.nearestEnemy);
                         if (weapon.CanShoot()) weapon.Shoot();
                     }
                 }
@@ -102,7 +102,7 @@ public class Ab_MissileAttacker : Ability
                     {
                         shootingState = ShootingState.InShootingDistance;
                         movement.LookAt(sensing.nearestEnemy.transform);
-                        weapon.AimAt(sensing.nearestEnemy.transform);
+                        weapon.AimAt(sensing.nearestEnemy);
                         movement.Stop();
                     }
                     else

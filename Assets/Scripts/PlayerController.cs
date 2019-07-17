@@ -89,8 +89,12 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("click");
-                    buildingSystem.PlaceBuilding(hit.point);
+                    if (!Utility.HitsUI(Input.mousePosition))
+                    {
+                        Debug.Log("click");
+                        buildingSystem.PlaceBuilding(hit.point);
+                    }
+                       
                 }
 
                 break;
