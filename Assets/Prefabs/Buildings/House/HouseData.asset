@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: House
   constructionPoints: 50
-  healthPoints: 25
+  healthPoints: 50000
+  description: Increases the population limit by 3
   cost:
   - type: 0
-    value: 10
+    value: 20
   menuImage: {fileID: 21300000, guid: 1d9ee799eee24034ebbb933f5fd1fec1, type: 3}
   placerPrefab: {fileID: 3082883888218054257, guid: 0e0ce8f54aae2e541930cfe4a5f0a1c6,
     type: 3}

@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1888828131255339038
 Transform:
@@ -97,7 +97,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2130791445526935032
 Transform:
@@ -174,7 +174,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6194503398311051679
 Transform:
@@ -251,7 +251,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1437056941289633714
 Transform:
@@ -328,7 +328,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2942526206527478452
 Transform:
@@ -408,7 +408,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2015036031972896354
 Transform:
@@ -448,8 +448,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  buildingData: {fileID: 11400000, guid: 983669e8674dddf4a90c166b6cbba38a, type: 2}
   width: 4
+  buildingData: {fileID: 11400000, guid: 983669e8674dddf4a90c166b6cbba38a, type: 2}
   buildingType: 0
 --- !u!114 &4175499010010618577
 MonoBehaviour:
@@ -467,8 +467,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a68991e74bae639498fa65df03b37d01, type: 2}
   - {fileID: 11400000, guid: 20880031e941ac14da504a6f87bf0d0d, type: 2}
   unitsUIButtons:
-  - {fileID: 5107967542483295440}
-  - {fileID: 4830389754498427757}
+  - {fileID: 4544398148814484568}
+  - {fileID: 748257934055890634}
   building: {fileID: 3595939239500897156}
   recruitmentSpeed: 1
   currentRecruitedUnit: {fileID: 0}
@@ -533,7 +533,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4176367021838185609
 Transform:
@@ -564,7 +564,12 @@ PrefabInstance:
     - target: {fileID: 1013998590731799456, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1013998590731799456, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8399885950390024892, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
@@ -676,6 +681,86 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 817705627651678836, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8023028661816348046, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8709500003715420332, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8709500003715420332, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445515304547534967, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: queueHolderGO
+      value: 
+      objectReference: {fileID: 7230490034040119710}
+    - target: {fileID: 3445515304547534967, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onLmb
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445515304547534967, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onRmb
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445515304547534967, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onLmbAndShift
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445515304547534967, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onRmbAndShift
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919174733404381925, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: queueHolderGO
+      value: 
+      objectReference: {fileID: 7230490034040119710}
+    - target: {fileID: 1919174733404381925, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onLmb
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919174733404381925, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onRmb
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919174733404381925, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onLmbAndShift
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919174733404381925, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: onRmbAndShift
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4561849657859838719, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4225830628036748610, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
       propertyPath: unitID
@@ -771,21 +856,31 @@ PrefabInstance:
       propertyPath: queueHolderGO
       value: 
       objectReference: {fileID: 7230490034040119710}
-    - target: {fileID: 8709500003715420332, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+    - target: {fileID: 2696094716336558605, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
-    - target: {fileID: 998041247491485281, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+    - target: {fileID: 2342341663414674864, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4495130953320510367, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4290295746607547426, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d90b7631b6ad6b0438ec9e39cebe07a0, type: 3}
---- !u!114 &5107967542483295440 stripped
+--- !u!114 &4544398148814484568 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7156659753631844973, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+  m_CorrespondingSourceObject: {fileID: 1919174733404381925, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
     type: 3}
   m_PrefabInstance: {fileID: 2716432856644490941}
   m_PrefabAsset: {fileID: 0}
@@ -807,9 +902,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2716432856644490941}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4830389754498427757 stripped
+--- !u!114 &748257934055890634 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7402308831846219216, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+  m_CorrespondingSourceObject: {fileID: 3445515304547534967, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
     type: 3}
   m_PrefabInstance: {fileID: 2716432856644490941}
   m_PrefabAsset: {fileID: 0}

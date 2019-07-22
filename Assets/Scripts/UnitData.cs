@@ -6,6 +6,7 @@ using UnityEngine;
 public class UnitData : ScriptableObject
 {
     public string unitName;
+    public string description;
     public int recruitingPoints; // how long is the recruiting Process?
     public int healthPoints;
     public int populationValue;

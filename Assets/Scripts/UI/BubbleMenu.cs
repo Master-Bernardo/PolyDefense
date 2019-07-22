@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class BubbleMenu : MonoBehaviour
@@ -12,11 +13,11 @@ public class BubbleMenu : MonoBehaviour
 
     public void Show()
     {
-        menu.SetActive(true);
+        menu.GetComponent<Canvas>().enabled = true;
     }
 
     public void Hide()
     {
-        menu.SetActive(false);
+        menu.GetComponent<Canvas>().enabled = false;
     }
 }

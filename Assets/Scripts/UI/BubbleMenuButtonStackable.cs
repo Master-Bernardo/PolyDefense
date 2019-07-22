@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 /*in the mobile version if we hold our finger on a button we get the option to set it to unendlich or set minus values or et info on this unit*/
 
-public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler
+public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     int number;
     public Image backgroundImage;
@@ -25,6 +25,8 @@ public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler
     public int onLmbAndShift;
     public int onRmbAndShift;
     public int onLmbAndStrg;
+
+    public UnitInfoPanel infoPanel;
 
     /*public UnityEvent OnLmb;
     public UnityEvent OnRmb;
@@ -63,6 +65,16 @@ public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        infoPanel.gameObject.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        infoPanel.gameObject.SetActive(false);
+    }
+
     public void Print(string print)
     {
         Debug.Log(print);
@@ -73,6 +85,7 @@ public class BubbleMenuButtonStackable : MonoBehaviour, IPointerClickHandler
         unitIcon.sprite = data.menuImage;
         backgroundImage.color = normalColor;
         queueHolder = queueHolderGO.GetComponent<IQueueHolder<int, int>>();
+        infoPanel.SetUp(data);
     }
 
     public void UpdateUI (int numberOfUnitsInRecruitmentQueue)

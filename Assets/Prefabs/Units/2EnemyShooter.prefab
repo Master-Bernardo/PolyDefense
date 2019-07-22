@@ -101,7 +101,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362219359314239674}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5250001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1362219360078381133}
@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 8578968545562259445}
   - component: {fileID: 1362219360397472218}
   - component: {fileID: -7568736579957523176}
+  - component: {fileID: 8466272924457072801}
   - component: {fileID: 1362219360397472213}
   - component: {fileID: 1710908285939122047}
   m_Layer: 11
@@ -245,14 +246,15 @@ MonoBehaviour:
   - {fileID: 8578968545562259445}
   - {fileID: -7568736579957523176}
   - {fileID: 6311281878053251612}
+  - {fileID: 8466272924457072801}
   aimingCorrector: {x: 0, y: 1, z: 0}
   onDieEvent:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  unitData: {fileID: 11400000, guid: a68991e74bae639498fa65df03b37d01, type: 2}
   width: 0.5
+  unitData: {fileID: 11400000, guid: 20880031e941ac14da504a6f87bf0d0d, type: 2}
 --- !u!114 &8578968545562259445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,11 +267,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695bcb7ec571c074c83854c2c1f7faf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentBehaviour:
+    behaviourUpdateInterval: 0
+    entity: {fileID: 0}
   missileBehaviour:
+    behaviourUpdateInterval: 0
+    entity: {fileID: 0}
     maximalShootingDistance: 20
     minimalShootingDistance: 8
-    checkingInterval: 0.5
+    distanceCheckingInterval: 0.5
   attackBaseBehaviour:
+    behaviourUpdateInterval: 0
+    entity: {fileID: 0}
     distanceCheckingInterval: 1
     maximalShootingDistance: 20
     minimalShootingDistance: 2
@@ -288,6 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9957dad10bc9d7b4ca87bf26eae90a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showGizmo: 0
   movementUpdateIntervall: 0
 --- !u!114 &-7568736579957523176
 MonoBehaviour:
@@ -305,6 +315,30 @@ MonoBehaviour:
   nearestEnemy: {fileID: 0}
   scanInterval: 0.5
   scanRadius: 15
+--- !u!114 &8466272924457072801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362219360397472217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53cc32365af46a246a96468e9b49d092, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 0
+  healthBarFill: {fileID: 0}
+  changeColorOnDamage: 1
+  damageColor: {r: 0.6792453, g: 0.022427924, b: 0.10155412, a: 1}
+  renderersToTint:
+  - {fileID: 1362219360078381132}
+  - {fileID: 1362219360456164445}
+  - {fileID: 1362219358553225156}
+  - {fileID: 2573593055391943654}
+  - {fileID: 6091442893848267168}
+  changeColorTIme: 0.3
 --- !u!195 &1362219360397472213
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -324,7 +358,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &1710908285939122047
@@ -338,9 +372,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1362219360456164419
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +584,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7730886390778029545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.058, z: 1.872}
+  m_LocalPosition: {x: 0, y: -0.058, z: 2.733}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1526730658472777866}
@@ -581,7 +615,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7883505650103029894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.588, y: 0.789, z: 0}
+  m_LocalPosition: {x: 0.588, y: 1.314, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2037764369937273511}
@@ -697,7 +731,6 @@ GameObject:
   - component: {fileID: 890108000429878361}
   - component: {fileID: 3399749148091643853}
   - component: {fileID: 3967697923182543714}
-  - component: {fileID: 1874815460661292072}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -1902,17 +1935,3 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!64 &1874815460661292072
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8679697575723171077}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}

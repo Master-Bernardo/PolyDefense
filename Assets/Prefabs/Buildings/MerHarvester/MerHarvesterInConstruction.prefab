@@ -125,8 +125,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamID: 0
   abilities: []
+  aimingCorrector: {x: 0, y: 0, z: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  width: 5
   buildingData: {fileID: 11400000, guid: 8f6636fc7ae2c3f4c9d97a94aa3deac1, type: 2}
-  width: 3
   inConstructionModel: {fileID: 8731675486140073552}
   constructedBuildingPrefab: {fileID: 7230490034040119710, guid: b4b61bc9ee3f62c4a96778c6ad857de8,
     type: 3}

@@ -9,6 +9,7 @@ public class WaveScenario : MonoBehaviour
     public float waveUnitsNumber;
     public float waveRiser; //the units number gets bigger by this amount every wave
     public float pauseTime;
+    public float prepTime;
 
     float nextWaveTime;
     int waveNumber = 0;
@@ -24,7 +25,7 @@ public class WaveScenario : MonoBehaviour
     public Text waveEnemiesLeft;
     public Text waveNumberUI;
 
-    public Transform spawnPoint;
+    public Transform[] spawnPoints;
 
     enum WaveScenarioState
     {
@@ -36,7 +37,7 @@ public class WaveScenario : MonoBehaviour
 
     void Start()
     {
-        nextWaveTime = pauseTime * 2;
+        nextWaveTime = prepTime;
     }
 
     void Update()
@@ -51,20 +52,8 @@ public class WaveScenario : MonoBehaviour
                     //spawn enemies:
                     waveNumber++;
 
-                    int meleeNumber = (int)Random.Range(0, waveUnitsNumber);
 
-                    for (int i = 0; i < meleeNumber; i++)
-                    {
-                        GameEntity entity = Instantiate(meleeEnemy,spawnPoint.position, spawnPoint.rotation).GetComponent<GameEntity>();
-                        entity.onDieEvent.AddListener(delegate { OnEnemyFromThisWaveDies(entity); });
-                        currentWaveEnemies.Add(entity);
-                    }
-                    for (int i = meleeNumber; i < waveUnitsNumber; i++)
-                    {
-                        GameEntity entity = Instantiate(missileEnemy, spawnPoint.position, spawnPoint.rotation).GetComponent<GameEntity>();
-                        entity.onDieEvent.AddListener(delegate { OnEnemyFromThisWaveDies(entity); });
-                        currentWaveEnemies.Add(entity);
-                    }
+                    SpawnUnits();
 
                     waveUnitsNumber += waveRiser;
 
@@ -102,5 +91,51 @@ public class WaveScenario : MonoBehaviour
     public void OnEnemyFromThisWaveDies(GameEntity entity)
     {
         currentWaveEnemies.Remove(entity);
+    }
+
+    //Refactor this, not ideal
+    void SpawnUnits()
+    {
+        //we randomly dispose the units around the spawnpoints
+        int unitsLeft = (int)waveUnitsNumber;
+        float approxNumberPerPoint =  (unitsLeft * 1f / spawnPoints.Length);
+
+        while (unitsLeft>0)
+        {
+            for (int i = 0; i < spawnPoints.Length; i++)
+            {
+                Random.seed = System.DateTime.Now.Millisecond;
+                int unitsAtThisPoint = (int)Random.Range(approxNumberPerPoint / 2, approxNumberPerPoint * 2);
+
+                if (unitsAtThisPoint > unitsLeft) unitsAtThisPoint = unitsLeft;
+                int meleesAtThisPoint = (int)Random.Range(0, unitsAtThisPoint);
+
+                for (int j = 0; j < meleesAtThisPoint; j++)
+                {
+                    GameEntity entity = Instantiate(meleeEnemy, spawnPoints[i].position, spawnPoints[i].rotation).GetComponent<GameEntity>();
+                    entity.onDieEvent.AddListener(delegate { OnEnemyFromThisWaveDies(entity); });
+                    currentWaveEnemies.Add(entity);
+                    unitsLeft--;
+
+                }
+                for (int j = meleesAtThisPoint; j < unitsAtThisPoint; j++)
+                {
+                    GameEntity entity = Instantiate(missileEnemy, spawnPoints[i].position, spawnPoints[i].rotation).GetComponent<GameEntity>();
+                    entity.onDieEvent.AddListener(delegate { OnEnemyFromThisWaveDies(entity); });
+                    currentWaveEnemies.Add(entity);
+                    unitsLeft--;
+
+
+                }
+
+
+
+            }
+        }
+
+        
+
+
+        
     }
 }

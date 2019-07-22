@@ -15,11 +15,12 @@ MonoBehaviour:
   buildingName: Tower
   constructionPoints: 50
   healthPoints: 50
+  description: The tower will shoot enemies in a range of 20
   cost:
   - type: 0
-    value: 20
-  - type: 1
     value: 10
+  - type: 1
+    value: 40
   menuImage: {fileID: 21300000, guid: e6669ffd83064354e91253016025c2c4, type: 3}
   placerPrefab: {fileID: 574638548998706788, guid: 47fbfb9a36e185148aee15c3fa0b2bfb,
     type: 3}

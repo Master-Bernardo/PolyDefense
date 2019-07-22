@@ -17,7 +17,7 @@ public class BuildingSystem : MonoBehaviour
     BuildingPlacer currentBuildingPlacer;
 
     public Transform playersBaseLocation;
-    Ab_Base playerBase;
+    EC_Base playerBase;
 
     HashSet<BuildingInConstruction> buildingsToConstruct = new HashSet<BuildingInConstruction>();
 
@@ -37,7 +37,7 @@ public class BuildingSystem : MonoBehaviour
     }
 
     #region Management of other buildings 
-    public void SetBaseBuilding(Ab_Base playerBase)
+    public void SetBaseBuilding(EC_Base playerBase)
     {
         this.playersBaseLocation = playerBase.transform;
         this.playerBase = playerBase;

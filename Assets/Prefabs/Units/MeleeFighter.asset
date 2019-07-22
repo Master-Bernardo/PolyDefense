@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: MeleeFighter
   m_EditorClassIdentifier: 
   unitName: MeleeFighter
+  description: Storms toward the enemy to finish him off in melee
   recruitingPoints: 3
-  healthPoints: 40
+  healthPoints: 50
   populationValue: 1
   cost:
   - type: 0

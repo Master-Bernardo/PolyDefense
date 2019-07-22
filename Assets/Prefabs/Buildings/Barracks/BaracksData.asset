@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16e2397b20eace547a93caecefd99f94, type: 3}
   m_Name: BaracksData
   m_EditorClassIdentifier: 
-  buildingName: House
+  buildingName: Barracks
   constructionPoints: 50
-  healthPoints: 25
+  healthPoints: 50000
+  description: trains workers to become warriors and patrol the terrain around it
   cost:
   - type: 0
-    value: 10
-  menuImage: {fileID: 21300000, guid: 1d9ee799eee24034ebbb933f5fd1fec1, type: 3}
+    value: 50
+  - type: 1
+    value: 70
+  menuImage: {fileID: 21300000, guid: f9862f076887ca842973b43a77179507, type: 3}
   placerPrefab: {fileID: 3082883888218054257, guid: 485ed409b306ba44796bf2197d60c606,
     type: 3}

@@ -17,9 +17,16 @@ public class UIManager : MonoBehaviour
     public Text populationLimit;
 
     [Header("StrategyMenu")]
-    public GameObject exitPanel;
+    //public GameObject exitPanel;
     public GameObject buildingPanel;
     public GameObject strategyMenuPanel;
+
+    public ToogleableButton economyButton;
+    public ToogleableButton buildingButton;
+
+    public RectTransform baseHPBar;
+    public GameObject gameOverPanel;
+
 
     enum UIMode
     {
@@ -27,7 +34,7 @@ public class UIManager : MonoBehaviour
         Action
     }
 
-    enum StrategyUIMode
+   /* enum StrategyUIMode
     {
         Default,
         Building,
@@ -35,7 +42,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    StrategyUIMode strategyUIMode = StrategyUIMode.Default;
+    StrategyUIMode strategyUIMode = StrategyUIMode.Default;*/
 
     public PlayerController playerController;
 
@@ -78,40 +85,64 @@ public class UIManager : MonoBehaviour
         this.populationLimit.text = populationLimit.ToString();
     }
 
-    public void OnBuildingButtonClicked()
+    public void OnBuildingButtonActivated()
+    {
+        ActivateBuildingPanel();
+    }
+
+    public void OnBuildingButtonDeactivated()
+    {
+        playerController.StopPlaningBuilding();
+        DeactivateBuildingPanel();
+    }
+
+    public void ActivateBuildingPanel()
     {
         buildingPanel.SetActive(true);
-        strategyUIMode = StrategyUIMode.Building;
-        strategyMenuPanel.SetActive(false);
-        exitPanel.SetActive(true);
+        buildingButton.Activate();
     }
 
-    public void OnEconomyButtonClicked()
+    public void DeactivateBuildingPanel()
     {
-        strategyUIMode = StrategyUIMode.Economy;
+        buildingButton.Deactivate();
+        buildingPanel.SetActive(false);
+    }
+
+    public void ToogleBuildingPanel()
+    {
+        if (buildingPanel.activeSelf)
+        {
+            DeactivateBuildingPanel();
+        }
+        else
+        {
+            ActivateBuildingPanel();
+        }
+    }
+
+
+
+    public void OnEconomyButtonActivated()
+    {
         playerController.EnterEconomyMenagementMode();
-        ShowWorkerAssigners();
-        strategyMenuPanel.SetActive(false);
-        exitPanel.SetActive(true);
     }
 
-    public void OnStrategyExitButtonClicked()
+    public void OnEconomyButtonDeactivated()
     {
-        if(strategyUIMode == StrategyUIMode.Economy)
-        {
-            HideWorkerAssigners();
-            playerController.ExitEconomyMenagementMode();
+        playerController.ExitEconomyMenagementMode();
+    }
 
-        }
-        else if(strategyUIMode == StrategyUIMode.Building)
-        {
-            buildingPanel.SetActive(false);
-            playerController.StopPlaningBuilding();
-        }
+    public void ActivateEconomyView()
+    {
+        ShowWorkerAssigners();
+        economyButton.Activate();
+    }
 
-        strategyMenuPanel.SetActive(true);
-        exitPanel.SetActive(false);
-        strategyUIMode = StrategyUIMode.Default;
+    public void DeactivateEconomyView()
+    {
+        economyButton.Deactivate(); //to make sure it changes color;
+        HideWorkerAssigners();
+
     }
 
     public void OnBuildingSelectButtonClicked(BuildingPlacerButton button)
@@ -119,10 +150,20 @@ public class UIManager : MonoBehaviour
         playerController.StartPlaningBuilding(button.buildingData);
     }
 
+    public void SetBaseHP(float currentHealth, float maxHealth)
+    {
+        baseHPBar.localScale = new Vector3(currentHealth/maxHealth, 1f, 1f);
+        if (currentHealth <= 0)
+        {
+            gameOverPanel.SetActive(true);
+        }
+    }
+
     #region manages the worker assigner worldspace UI´s for the economy View
     public void AddWorkerAssigner(WorkerAssignerUI work)
     {
         workerAssigners.Add(work);
+        if (playerController.economyActive) work.canvas.enabled = true;
     }
 
     public void RemoveWorkerAssigner(WorkerAssignerUI work)

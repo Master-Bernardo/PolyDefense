@@ -5,18 +5,20 @@ using UnityEngine;
 public enum PlayerControllerState
 {
     BuildingMode,
-    EconomyManagement,
+    //EconomyManagement,
     Default
 }
 
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerControllerState state = PlayerControllerState.Default;
+    public PlayerControllerState state;
     public BuildingSystem buildingSystem;
     public CameraController cameraController;
+    public UIManager uIManager;
 
     public GameObject testBuildingPrefab;
+    public bool economyActive = false;
 
     public int groundLayer;
     public int buildingsLayer;
@@ -34,47 +36,63 @@ public class PlayerController : MonoBehaviour
     {
         cameraController.MoveCamera(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), Input.GetAxis("Mouse ScrollWheel"));
 
+
+        #region input
+  
         if (Input.GetKeyDown(KeyCode.B))
         {
-            if(state == PlayerControllerState.Default)
+            uIManager.ToogleBuildingPanel();
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            if(economyActive)
             {
-                state = PlayerControllerState.BuildingMode;
-                buildingSystem.StartPlaning(testBuildingPrefab);
+                ExitEconomyMenagementMode();
             }
-            else 
+            else
             {
-                state = PlayerControllerState.Default;
-                buildingSystem.StopPlaning();
+                EnterEconomyMenagementMode();
             }
         }
+
+
+
+        #endregion
+
+        #region Handle states in update
 
         switch (state)
         {
             case PlayerControllerState.Default:
+                
+
 
                 if (Input.GetMouseButtonDown(0))
                 {
-
-                    if (!Utility.HitsUI(Input.mousePosition))
+                    if (!economyActive)
                     {
-                        if (currentOpenBubbleMenu != null) currentOpenBubbleMenu.Hide();
-
-                    }
-                    layerMask = 1 << buildingsLayer;
-
-                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-                    {
-                        //all buildings need to have buildingMenu attached
-                        BubbleMenu bubbleMenu = hit.collider.GetComponent<BubbleMenu>();
-                        if (bubbleMenu != null)
+                        if (!Utility.HitsUI(Input.mousePosition))
                         {
-                            currentOpenBubbleMenu = bubbleMenu;
-                            currentOpenBubbleMenu.Show();
+                            if (currentOpenBubbleMenu != null) currentOpenBubbleMenu.Hide();
+
+                        }
+                        layerMask = 1 << buildingsLayer;
+
+                        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+                        {
+                            //all buildings need to have buildingMenu attached
+                            BubbleMenu bubbleMenu = hit.collider.GetComponent<BubbleMenu>();
+                            if (bubbleMenu != null)
+                            {
+                                currentOpenBubbleMenu = bubbleMenu;
+                                currentOpenBubbleMenu.Show();
+                            }
                         }
                     }
                 }
+
                 break;
 
             case PlayerControllerState.BuildingMode:
@@ -96,12 +114,16 @@ public class PlayerController : MonoBehaviour
                     }
                        
                 }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    state = PlayerControllerState.Default;
+                    buildingSystem.StopPlaning();
+                }
 
                 break;
 
-            case PlayerControllerState.EconomyManagement:
 
-                break;
+                #endregion
         }
     }
 
@@ -121,16 +143,17 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
     public void EnterEconomyMenagementMode()
     {
-        state = PlayerControllerState.EconomyManagement;
+        uIManager.ActivateEconomyView();
+        economyActive = true;
         if (currentOpenBubbleMenu != null) currentOpenBubbleMenu.Hide();
-
     }
 
     public void ExitEconomyMenagementMode()
     {
-        state = PlayerControllerState.Default;
-
+        economyActive = false;
+        uIManager.DeactivateEconomyView();
     }
 }

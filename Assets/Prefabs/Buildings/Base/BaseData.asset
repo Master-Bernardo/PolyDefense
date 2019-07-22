@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingName: Base
   constructionPoints: 250
-  healthPoints: 100
+  healthPoints: 200
+  description: Central Building, spawns workers if there is enough room, if it gets
+    destroyed, you loose
   cost:
   - type: 0
     value: 100

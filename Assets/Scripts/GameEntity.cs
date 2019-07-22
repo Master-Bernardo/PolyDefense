@@ -16,6 +16,7 @@ public class GameEntity : MonoBehaviour
     public Ability[] abilities;
     public Vector3 aimingCorrector; //correctes the aiming, sets it higher, because every units 0 is at the bottom for distance chekcs
     public UnityEvent onDieEvent;
+    public float width;
 
     private void Start()
     {

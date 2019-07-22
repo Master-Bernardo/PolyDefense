@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1888828131255339038
 Transform:
@@ -95,7 +95,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2015036031972896354
 Transform:
@@ -128,7 +128,15 @@ MonoBehaviour:
   teamID: 0
   abilities:
   - {fileID: 441000406721039929}
+  aimingCorrector: {x: 0, y: 0, z: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  width: 4
   buildingData: {fileID: 11400000, guid: 5bf1bd18b2430f94a95290a2c8eb0756, type: 2}
+  buildingType: 0
 --- !u!114 &441000406721039929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +193,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4176367021838185609
 Transform:

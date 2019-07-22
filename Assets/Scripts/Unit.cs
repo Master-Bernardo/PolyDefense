@@ -5,22 +5,19 @@ using UnityEngine;
 public class Unit : GameEntity, IDamageable<float>
 {
     public UnitData unitData;
-    float currentHealth;
-    public float width;
+    [SerializeField]
+    //float currentHealth;
 
-    public virtual void Awake()
-    {
-        currentHealth = unitData.healthPoints;
-    }
+    //public virtual void Awake()
+    //{
+        //currentHealth = unitData.healthPoints;
+    //}
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
+        foreach (Ability ability in abilities)
         {
-            currentHealth = 0;
-            Die();
+            ability.OnTakeDamage(damage);
         }
-
     }
 }

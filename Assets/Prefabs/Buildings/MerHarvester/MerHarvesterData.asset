@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16e2397b20eace547a93caecefd99f94, type: 3}
   m_Name: MerHarvesterData
   m_EditorClassIdentifier: 
-  buildingName: MerHarvester
+  buildingName: Mer Harvester
   constructionPoints: 50
-  healthPoints: 25
+  healthPoints: 50000
+  description: Assigned workers will harvest the blue  "mer" ressource
   cost:
   - type: 0
     value: 25

@@ -8,7 +8,6 @@ public class Ressource : GameEntity
     public bool infinite;
     int currentRessourceAmount;
     public RessourceType type;
-    public float width;
 
     private void Start()
     {

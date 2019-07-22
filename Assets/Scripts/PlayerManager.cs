@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour
     public int populationLimit;
     public int currentPopulation;
 
-    HashSet<Ab_Worker> idleWorkers = new HashSet<Ab_Worker>();
+    HashSet<B_Worker> idleWorkers = new HashSet<B_Worker>();
     
 
     public static PlayerManager Instance;
@@ -56,6 +56,9 @@ public class PlayerManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
 
     }
 
@@ -79,12 +82,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void AddIdleWorker(Ab_Worker worker)
+    public void AddIdleWorker(B_Worker worker)
     {
         idleWorkers.Add(worker);
     }
 
-    public void RemoveIdleWorker(Ab_Worker worker)
+    public void RemoveIdleWorker(B_Worker worker)
     {
         idleWorkers.Remove(worker);
     }
@@ -94,14 +97,14 @@ public class PlayerManager : MonoBehaviour
         return idleWorkers.Count;
     }
 
-    public Ab_Worker GetNearestIdleWorker(Vector3 position)
+    public B_Worker GetNearestIdleWorker(Vector3 position)
     {
-        Ab_Worker nearestWorker = null;
+        B_Worker nearestWorker = null;
         float nearestDistance = Mathf.Infinity;
 
-        foreach(Ab_Worker worker in idleWorkers)
+        foreach(B_Worker worker in idleWorkers)
         {
-            float currentDistance = (worker.transform.position - position).sqrMagnitude;
+            float currentDistance = (worker.entity.transform.position - position).sqrMagnitude;
 
             if (currentDistance < nearestDistance)
             {
