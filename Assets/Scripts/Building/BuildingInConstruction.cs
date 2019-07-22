@@ -75,12 +75,4 @@ public class BuildingInConstruction : GameEntity, IDamageable<float>
         Instantiate(constructedBuildingPrefab, transform.position, transform.rotation);
         Destroy(gameObject);
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Construct(10);
-        }
-    }
 }

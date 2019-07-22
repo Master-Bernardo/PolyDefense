@@ -245,8 +245,6 @@ public class B_MissileFighter : Behaviour
         minimalShootingDistanceSquared = minimalShootingDistance  * minimalShootingDistance;
     }
 
-
-
     protected override void Update()
     {
         switch (state)
@@ -268,6 +266,10 @@ public class B_MissileFighter : Behaviour
                         //move to a position perfectly in the shooting range
                         movement.MoveTo(entity.transform.position + (entity.transform.position - sensing.nearestEnemy.transform.position).normalized * (maximalShootingDistance/2));
                     }
+
+                    weapon.AimAt(sensing.nearestEnemy);
+                    movement.LookAt(sensing.nearestEnemy.transform);
+
                 }
 
                 if (weapon.CanShoot()) weapon.Shoot();
@@ -291,8 +293,6 @@ public class B_MissileFighter : Behaviour
                     if (distanceToEnemy < maximalShootingDistanceSquared)
                     {
                         state = MissileFighterState.InShootingDistance;
-                        movement.LookAt(sensing.nearestEnemy.transform);
-                        weapon.AimAt(sensing.nearestEnemy);
                         movement.Stop();
                     }
                     else
@@ -325,6 +325,10 @@ public class B_MissileFighter : Behaviour
                         movement.MoveTo(entity.transform.position + (entity.transform.position - sensing.nearestEnemy.transform.position).normalized * (maximalShootingDistance / 2));
                     }
 
+                    weapon.AimAt(sensing.nearestEnemy);
+                    movement.LookAt(sensing.nearestEnemy.transform);
+
+
                     //add some collisionChecking
                     /*
                     RaycastHit hit;
@@ -334,7 +338,7 @@ public class B_MissileFighter : Behaviour
                         {
                            // movement.MoveTo.
                         }
-                    }   */        
+                    }   */
 
                 }
 
@@ -351,8 +355,6 @@ public class B_MissileFighter : Behaviour
         if (distanceToEnemy < minimalShootingDistanceSquared)
         {
             state = MissileFighterState.TooNear;
-            movement.LookAt(sensing.nearestEnemy.transform);
-            weapon.AimAt(sensing.nearestEnemy);
             movement.MoveTo(entity.transform.position + (entity.transform.position - sensing.nearestEnemy.transform.position).normalized * (maximalShootingDistance / 2));
         }
         else if (distanceToEnemy > maximalShootingDistanceSquared)
@@ -365,7 +367,6 @@ public class B_MissileFighter : Behaviour
         else
         {
             movement.LookAt(sensing.nearestEnemy.transform);
-            weapon.AimAt(sensing.nearestEnemy);
             movement.Stop();
             state = MissileFighterState.InShootingDistance;
         }
@@ -374,6 +375,7 @@ public class B_MissileFighter : Behaviour
     public override void OnBehaviourExit()
     {
         movement.StopLookAt();
+        weapon.StopAiming(); 
     }
 }
 
@@ -669,9 +671,13 @@ public class B_Worker: Behaviour
     //for ressourceGathering
     [Tooltip("how much ressources do we gather on one hit")]
     public int ressourceGatheringPower;
-    public int ressourceTransportLoad;
-    int currentRessourceTransportLoad = 0;
+
+
+    //public int ressourceTransportLoad;
+    //int currentRessourceTransportLoad = 0;
     public float ressourceGatherInterval;
+    [SerializeField]
+    WorkerInventory ressourceInventory;
     float nextRessourceGatheringTime;
     bool standingBesideHarvesterAndWaiting = false;
     Ressource currentSelectedRessource;
@@ -681,8 +687,12 @@ public class B_Worker: Behaviour
 
     [Header("for the worker look in different sections")]
     public GameObject constructionAccesories;
+    public WorkerTool constructionTool;
     public GameObject ferHarvestingAccesories;
+    public WorkerTool ferHarvestingTool;
     public GameObject merHarvestingAccesories;
+    public WorkerTool merHarvestingTool;
+
 
 
 
@@ -706,7 +716,7 @@ public class B_Worker: Behaviour
 
             case WorkerState.Harvesting:
 
-                if(currentRessourceTransportLoad< ressourceTransportLoad)
+                if(ressourceInventory.currentRessourceTransportLoad < ressourceInventory.ressourceTransportLoad)
                 {
                     harvestingState = HarvestingState.Idle;
                 }
@@ -735,6 +745,10 @@ public class B_Worker: Behaviour
         {
             despositionBuilding.GetComponent<IDepositioneable<B_Worker>>().OnWorkerCancelsTasks(this);
         }
+
+        constructionTool.StopAnimation();
+        ferHarvestingTool.StopAnimation();
+        merHarvestingTool.StopAnimation();
     }
 
     protected override void Update()
@@ -823,6 +837,7 @@ public class B_Worker: Behaviour
                                 {
                                     movement.Stop();
                                     constructionState = ConstructionState.Constructing;
+                                    constructionTool.StartAnimation();
                                     nextConstructionTime = Time.time + constructionInterval;
                                 }
                             }
@@ -847,6 +862,8 @@ public class B_Worker: Behaviour
                             else
                             {
                                 constructionState = ConstructionState.Idle;
+                                constructionTool.StopAnimation();
+
                             }
 
                         }
@@ -921,12 +938,27 @@ public class B_Worker: Behaviour
                                 {
                                     movement.Stop();
                                     harvestingState = HarvestingState.GatheringRessource;
+
+                                    //activate the tool
+                                    if(assignedHarvesterType == RessourceType.fer)
+                                    {
+                                        ferHarvestingTool.StartAnimation();
+                                    }
+                                    else if(assignedHarvesterType == RessourceType.mer)
+                                    {
+                                        merHarvestingTool.StartAnimation();
+                                    }
+
                                     nextRessourceGatheringTime = Time.time + ressourceGatherInterval;
                                 }
                             }
                             else
                             {
                                 harvestingState = HarvestingState.Idle;
+                                ferHarvestingTool.StopAnimation();
+                                merHarvestingTool.StopAnimation();
+
+
                             }
                         }
 
@@ -941,27 +973,33 @@ public class B_Worker: Behaviour
                             {
                                 nextRessourceGatheringTime = Time.time + ressourceGatherInterval;
                                 //gather but check how much will fit
-                                if (currentRessourceTransportLoad + ressourceGatheringPower > ressourceTransportLoad)
+                                if (ressourceInventory.currentRessourceTransportLoad + ressourceGatheringPower > ressourceInventory.ressourceTransportLoad)
                                 {
-                                    currentRessourceTransportLoad += currentSelectedRessource.TakeRessource(ressourceTransportLoad - currentRessourceTransportLoad);
+                                    ressourceInventory.AddRessource(currentSelectedRessource.type, currentSelectedRessource.TakeRessource(ressourceInventory.ressourceTransportLoad - ressourceInventory.currentRessourceTransportLoad));      
                                 }
                                 else
                                 {
-                                    currentRessourceTransportLoad += currentSelectedRessource.TakeRessource(ressourceGatheringPower);
+                                    ressourceInventory.AddRessource(currentSelectedRessource.type, currentSelectedRessource.TakeRessource(ressourceGatheringPower));
                                 }
 
                                 //if the sack is full, go back
-                                if (currentRessourceTransportLoad == ressourceTransportLoad)
+                                if (ressourceInventory.currentRessourceTransportLoad == ressourceInventory.ressourceTransportLoad)
                                 {
                                     Vector3 targetPosition = assignedHarvester.transform.position + (entity.transform.position - assignedHarvester.transform.position).normalized * assignedHarvester.width / 2;
                                     movement.MoveTo(targetPosition);
                                     // movement.MoveTo(assignedHarvester.transform.position);
                                     harvestingState = HarvestingState.TransportingRessourceToHarvester;
+                                    ferHarvestingTool.StopAnimation();
+                                    merHarvestingTool.StopAnimation();
+
                                 }
                             }
                             else
                             {
-                                if (currentRessourceTransportLoad > 0)
+                                ferHarvestingTool.StopAnimation();
+                                merHarvestingTool.StopAnimation();
+
+                                if (ressourceInventory.currentRessourceTransportLoad > 0)
                                 {
                                     Vector3 targetPosition = assignedHarvester.transform.position + (entity.transform.position - assignedHarvester.transform.position).normalized * assignedHarvester.width / 2;
                                     movement.MoveTo(targetPosition);
@@ -971,6 +1009,7 @@ public class B_Worker: Behaviour
                                 else
                                 {
                                     harvestingState = HarvestingState.Idle;
+                                    
                                 }
                             }
 
@@ -987,8 +1026,8 @@ public class B_Worker: Behaviour
                             if (Vector3.Distance(entity.transform.position, assignedHarvester.transform.position) < assignedHarvester.width)
                             {
                                 movement.Stop();
-                                assignedHarvester.DepotRessource(currentRessourceTransportLoad);
-                                currentRessourceTransportLoad = 0;
+                                assignedHarvester.DepotRessource(ressourceInventory.currentRessourceTransportLoad);
+                                ressourceInventory.Clear();
 
                                 if (currentSelectedRessource != null)
                                 {
@@ -1039,7 +1078,7 @@ public class B_Worker: Behaviour
         state = WorkerState.Construction;
         constructionState = ConstructionState.Idle;
         nextScanTime = Time.time;
-        ChangeAcessories();
+        ChangeAcessories();     
     }
 
     public void AssignToHarvesting(EC_HarvestingBuilding harvester)
@@ -1074,6 +1113,7 @@ public class B_Worker: Behaviour
         {
             despositionBuilding.GetComponent<IDepositioneable<B_Worker>>().OnWorkerCancelsTasks(this);
         }
+
         state = WorkerState.Idle;
         nextIdleMovementTime = 0;
         PlayerManager.Instance.AddIdleWorker(this);
@@ -1084,6 +1124,10 @@ public class B_Worker: Behaviour
 
     void ChangeAcessories()
     {
+        constructionTool.StopAnimation();
+        ferHarvestingTool.StopAnimation();
+        merHarvestingTool.StopAnimation();
+
         switch (state)
         {
             case WorkerState.Idle:

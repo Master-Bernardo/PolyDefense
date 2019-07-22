@@ -51,7 +51,6 @@ public class EC_ScanForEnemyUnits : Ability
         //get the nearest
         float nearestDistance = Mathf.Infinity;
         nearestEnemy = null;
-
         foreach(GameEntity enemy in enemiesInRange)
         {
             float currentDistance = (transform.position - enemy.transform.position).sqrMagnitude;

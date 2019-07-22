@@ -23,13 +23,11 @@ public class Ab_UAI_Worker : Ab_UnitAI
     {
         if (sensing.nearestEnemy != null)
         {
-            Debug.Log("flee");
             SetCurrentBehaviour(fleeBehaviour);
         }
         else
         {
             SetCurrentBehaviour(workerBehaviour);
-            Debug.Log("no flee");
 
         }
     }

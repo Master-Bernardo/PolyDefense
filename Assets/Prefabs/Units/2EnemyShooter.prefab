@@ -637,11 +637,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootingInterval: 2
   damage: 5
-  turningSpeed: 20
+  turningSpeed: 1
   projectilePrefab: {fileID: 1854935314691642160, guid: f2d7803a88b027544bff26281299a4c3,
     type: 3}
   projectileSpawnPoint: {fileID: 8596899453464104397}
   parent: {fileID: 1362219360397472216}
+  gravityProjectile: 1
+  initialLaunchSpeed: 20
 --- !u!1 &8646691871801791784
 GameObject:
   m_ObjectHideFlags: 0

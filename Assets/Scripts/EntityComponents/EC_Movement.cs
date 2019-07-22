@@ -68,6 +68,7 @@ public class EC_Movement : Ability
         agent.SetDestination(destination);
     }
 
+
     //this method tells the agent to look at a specific target while moving
     public void LookAt(Transform targetToLookAt)
     {
@@ -90,6 +91,16 @@ public class EC_Movement : Ability
     public void Stop()
     {
         agent.ResetPath();
+    }
+
+    public float GetCurrentVelocityMagnitude()
+    {
+        return agent.velocity.magnitude;
+    }
+
+    public Vector3 GetCurrentVelocity()
+    {
+        return agent.velocity;
     }
 
      private void OnDrawGizmos()
