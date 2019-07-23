@@ -276,8 +276,9 @@ MonoBehaviour:
     behaviourUpdateInterval: 0
     entity: {fileID: 0}
     distanceCheckingInterval: 0.5
-    perfectMeleeDistance: 1.2
+    perfectMeleeDistance: 1.5
     maxMeleeDistance: 2
+    minMeleeDistance: 1
   wanderBehaviour:
     behaviourUpdateInterval: 1.5
     entity: {fileID: 0}
@@ -331,7 +332,7 @@ MonoBehaviour:
   meleeAttackInterval: 1
   weaponAnimator: {fileID: 3745404370608497275}
   attackDuration: 0.35
-  drawDamageGizmo: 1
+  drawDamageGizmo: 0
   hitPosition: {x: 0, y: 1.6, z: 1.2}
   hitSphereRadius: 0.7
 --- !u!114 &3554608546815217145

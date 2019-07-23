@@ -135,6 +135,7 @@ public class B_MeleeFighter : Behaviour
     //the fighter will be between this distances, he does not need to stop to attack
     public float perfectMeleeDistance;
     public float maxMeleeDistance;
+    public float minMeleeDistance;
 
     //meleefighting
     EC_MeleeWeapon weapon;
@@ -150,7 +151,8 @@ public class B_MeleeFighter : Behaviour
 
         nextDistanceCheckTime = UnityEngine.Random.Range(0, distanceCheckingInterval);
         maxMeleeDistance *= maxMeleeDistance;
-        perfectMeleeDistance *= perfectMeleeDistance;
+        //perfectMeleeDistance;
+        //minMeleeDistance *= minMeleeDistance;
     }
 
     enum MeleeFighterState
@@ -166,25 +168,68 @@ public class B_MeleeFighter : Behaviour
     {
         if (Time.time > nextDistanceCheckTime)
         {
+            nextDistanceCheckTime = Time.time + distanceCheckingInterval;
+
             Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
             Vector3 myPosition = entity.transform.position;
 
-            nextDistanceCheckTime = Time.time + distanceCheckingInterval;
+            float distanceToEnemy = (nearestEnemyPosition - myPosition).sqrMagnitude;
+            Debug.Log("distance: " + distanceToEnemy);
+
+            //if the enemy is moving, we move to the position he will be at the time we arrive
+            EC_Movement enemyMovement = enemySensing.nearestEnemy.GetComponent<EC_Movement>();
+
+
+            if (enemyMovement.IsMoving())
+            {
+                //heuristically calculae future position
+                //1. how long will it take for me to reach the enemy?
+                float timeToReachEnemy = distanceToEnemy/distanceToEnemy / movement.GetMaxSpeed();
+                Debug.Log("time to reach Enemy: " + timeToReachEnemy);
+                //2. where will the enemy be after this time
+                Vector3 futurePosition = nearestEnemyPosition + enemyMovement.GetCurrentVelocity() * timeToReachEnemy;
+                Debug.Log("future position: " + futurePosition);
+
+
+                movement.MoveTo(futurePosition);
+            }
+            else
+            {
+                movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * perfectMeleeDistance);
+            }
 
             if ((nearestEnemyPosition - myPosition).sqrMagnitude > maxMeleeDistance)
             {
                 inRange = false;
                 movement.StopLookAt();
-                movement.MoveTo(nearestEnemyPosition);
-
             }
             else
             {
                 inRange = true;
                 movement.LookAt(enemySensing.nearestEnemy.transform);
-                movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * perfectMeleeDistance);
 
             }
+
+
+
+
+
+
+            /*if ((nearestEnemyPosition - myPosition).sqrMagnitude > maxMeleeDistance)
+            {
+                Debug.Log("not in range");
+                inRange = false;
+                movement.StopLookAt();
+                movement.MoveTo(nearestEnemyPosition);
+            }
+            else 
+            {
+                Debug.Log("inRange");
+                inRange = true;
+                movement.LookAt(enemySensing.nearestEnemy.transform);
+                movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * perfectMeleeDistance);
+
+            }*/
 
         }
 

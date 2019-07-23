@@ -85,9 +85,9 @@ public class EC_Movement : Ability
         lookAt = false;
     }
 
-    public bool isMoving()
+    public bool IsMoving()
     {
-        return agent.speed > 0;
+        return agent.velocity.magnitude > agent.speed/2;
     }
 
     public void Stop()
@@ -103,6 +103,11 @@ public class EC_Movement : Ability
     public Vector3 GetCurrentVelocity()
     {
         return agent.velocity;
+    }
+
+    public float GetMaxSpeed()
+    {
+        return agent.speed;
     }
 
      private void OnDrawGizmos()
