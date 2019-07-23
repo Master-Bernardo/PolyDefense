@@ -281,6 +281,8 @@ MonoBehaviour:
     behaviourUpdateInterval: 0
     entity: {fileID: 0}
     distanceCheckingInterval: 0.5
+    perfectMeleeDistance: 1.5
+    maxMeleeDistance: 2
   movement: {fileID: 1362219360397472218}
   sensing: {fileID: -7568736579957523176}
   weapon: {fileID: 5806150350584769080}

@@ -16,8 +16,6 @@ public class EC_MeleeWeapon : Ability
     public float attackDuration;
     bool attack;
 
-    IDamageable<float> currentTarget;
-
     public bool drawDamageGizmo;
     [Tooltip("position relative to the unit")]
     public Vector3 hitPosition;
@@ -31,7 +29,7 @@ public class EC_MeleeWeapon : Ability
         weaponTeamID = entity.teamID;
     }
 
-    public void Attack(IDamageable<float> target)
+    public void Attack()
     {
         if (Time.time > nextPrepareMeleeAttackTime)
         {
@@ -41,7 +39,7 @@ public class EC_MeleeWeapon : Ability
             attack = true;
             nextMeleeAttackTime = Time.time + attackDuration;
             weaponAnimator.SetTrigger("Attack");
-            currentTarget = target;
+            //currentTarget = target;
         }
     }
 

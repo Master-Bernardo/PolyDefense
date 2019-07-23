@@ -311,7 +311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1e94b20821bc34391fb8306b0336a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitsLayer: 11
   nearestEnemy: {fileID: 0}
   scanInterval: 0.5
   scanRadius: 15
@@ -644,6 +643,7 @@ MonoBehaviour:
   parent: {fileID: 1362219360397472216}
   gravityProjectile: 1
   initialLaunchSpeed: 20
+  shootingError: 5
 --- !u!1 &8646691871801791784
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,6 +26,9 @@ public class EC_MissileWeapon : Ability
     bool hasMovement; //does currentTarget have movement?
     EC_Movement currentEnemyMovement;
 
+    [Tooltip("the bullet gets rotated randomly upon shooting, so we add some skill based aiming")]
+    public float shootingError;
+
     public override void SetUpAbility(GameEntity entity)
     {
         base.SetUpAbility(entity);
@@ -147,7 +150,10 @@ public class EC_MissileWeapon : Ability
 
     public void Shoot()
     {
-        Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation).GetComponent<Projectile>();
+        //add random rotation based on skill
+        
+
+        Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation * Quaternion.Euler(Random.Range(-shootingError, shootingError), Random.Range(-shootingError, shootingError), 0f)).GetComponent<Projectile>();
         projectile.startVelocity = initialLaunchSpeed;
         projectile.projectileTeamID = myEntity.teamID;
         projectile.damage = damage;
