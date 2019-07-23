@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EC_EnemyMeleeFighter : Ability
 {
-    public EC_Movement movement;
+   /* public EC_Movement movement;
     public EC_ScanForEnemyUnits sensing;
     //public Ab_ScanForEnemyBuildings buildingsSensing;
     public EC_MeleeWeapon weapon;
@@ -103,5 +103,5 @@ public class EC_EnemyMeleeFighter : Ability
 
                 break;
         }
-    }
+    }*/
 }

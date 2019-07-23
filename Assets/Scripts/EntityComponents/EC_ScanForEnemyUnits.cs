@@ -6,8 +6,6 @@ using UnityEngine;
 //maybe change this to sensing with scanning obptions or let all the scanning options derive from snesing later
 public class EC_ScanForEnemyUnits : Ability
 {
-    public int unitsLayer;
-
     public HashSet<GameEntity> enemiesInRange = new HashSet<GameEntity>();
     public GameEntity nearestEnemy;
     
@@ -33,7 +31,7 @@ public class EC_ScanForEnemyUnits : Ability
 
     void Scan()
     {
-        int layerMask = 1 <<unitsLayer;
+        int layerMask = 1 << Settings.Instance.unitsLayer;
 
         Collider[] visibleColliders = Physics.OverlapSphere(transform.position, scanRadius, layerMask);
         enemiesInRange.Clear();

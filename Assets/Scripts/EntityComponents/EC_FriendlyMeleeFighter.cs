@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EC_FriendlyMeleeFighter : Ability
 {
-    public EC_Movement movement;
+    /*public EC_Movement movement;
     public EC_ScanForEnemyUnits sensing;
     public EC_MeleeWeapon weapon;
 
@@ -116,5 +116,5 @@ public class EC_FriendlyMeleeFighter : Ability
      
 
      
-    }
+    }*/
 }

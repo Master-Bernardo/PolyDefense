@@ -132,8 +132,14 @@ public class B_MeleeFighter : Behaviour
     public float distanceCheckingInterval;
     float nextDistanceCheckTime;
 
+    //the fighter will be between this distances, he does not need to stop to attack
+    public float perfectMeleeDistance;
+    public float maxMeleeDistance;
+
     //meleefighting
     EC_MeleeWeapon weapon;
+
+    bool inRange;
 
     public void SetUpBehaviour(GameEntity entity, EC_Movement movement, EC_ScanForEnemyUnits enemySensing, EC_MeleeWeapon weapon)
     {
@@ -143,11 +149,14 @@ public class B_MeleeFighter : Behaviour
         this.weapon = weapon;
 
         nextDistanceCheckTime = UnityEngine.Random.Range(0, distanceCheckingInterval);
+        maxMeleeDistance *= maxMeleeDistance;
+        perfectMeleeDistance *= perfectMeleeDistance;
     }
 
     enum MeleeFighterState
     {
-        MovingToEnemy,
+        TooFar,
+        TooNear,
         InMeleeDistance
     }
 
@@ -155,54 +164,175 @@ public class B_MeleeFighter : Behaviour
 
     protected override void Update()
     {
-        switch (state)
+        if (Time.time > nextDistanceCheckTime)
         {
-            case MeleeFighterState.MovingToEnemy:
+            Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
+            Vector3 myPosition = entity.transform.position;
 
-                if (Time.time > nextDistanceCheckTime)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
+            nextDistanceCheckTime = Time.time + distanceCheckingInterval;
 
-                    if ((enemySensing.nearestEnemy.transform.position - entity.transform.position).sqrMagnitude < weapon.meleeRange)
-                    {
-                        state = MeleeFighterState.InMeleeDistance;
-                        movement.Stop();
+            if ((nearestEnemyPosition - myPosition).sqrMagnitude > maxMeleeDistance)
+            {
+                inRange = false;
+                movement.StopLookAt();
+                movement.MoveTo(nearestEnemyPosition);
 
-                        if (weapon.CanAttack())
-                        {
-                            weapon.Attack(enemySensing.nearestEnemy.GetComponent<IDamageable<float>>());
-                        }
-                    }
-                    else
-                    {
-                        movement.MoveTo(enemySensing.nearestEnemy.transform.position);
-                    }
-                }
+            }
+            else
+            {
+                inRange = true;
+                movement.LookAt(enemySensing.nearestEnemy.transform);
+                movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * perfectMeleeDistance);
 
-                break;
+            }
 
-            case MeleeFighterState.InMeleeDistance:
-
-
-                if (Time.time > nextDistanceCheckTime)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
-                    if ((enemySensing.nearestEnemy.transform.position - entity.transform.position).sqrMagnitude > weapon.meleeRange)
-                    {
-                        state = MeleeFighterState.MovingToEnemy;
-                    }
-                }
-                
-                if (weapon.CanAttack())
-                {
-                    weapon.Attack(enemySensing.nearestEnemy.GetComponent<IDamageable<float>>());
-                }                   
-              
-
-                break;
         }
 
-       
+        if (inRange)
+        {
+            if (weapon.CanAttack())
+            {
+                weapon.Attack(enemySensing.nearestEnemy.GetComponent<IDamageable<float>>());
+            }
+        }
+
+            /*switch (state)
+            {
+                case MeleeFighterState.TooFar:
+
+                    if (Time.time > nextDistanceCheckTime)
+                    {
+                        Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
+                        Vector3 myPosition = entity.transform.position;
+
+                        nextDistanceCheckTime = Time.time + distanceCheckingInterval;
+
+                        if ((nearestEnemyPosition - myPosition).sqrMagnitude < maxMeleeDistance)
+                        {
+                            state = MeleeFighterState.InMeleeDistance;
+                            movement.LookAt(enemySensing.nearestEnemy.transform);
+                            //movement.Stop();
+
+                            if (weapon.CanAttack())
+                            {
+                                weapon.Attack(enemySensing.nearestEnemy.GetComponent<IDamageable<float>>());
+                            }
+                        }
+                        else
+                        {
+                            movement.MoveTo(nearestEnemyPosition);
+                        }
+                    }
+
+                    break;
+
+                case MeleeFighterState.InMeleeDistance:
+
+
+                    if (Time.time > nextDistanceCheckTime)
+                    {
+                        Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
+                        Vector3 myPosition = entity.transform.position;
+
+                        nextDistanceCheckTime = Time.time + distanceCheckingInterval;
+
+                        if ((nearestEnemyPosition - myPosition).sqrMagnitude > maxMeleeDistance)
+                        {
+                            state = MeleeFighterState.TooFar;
+                            movement.StopLookAt();
+                            movement.MoveTo(nearestEnemyPosition);
+                        }
+                        else if((nearestEnemyPosition - myPosition).sqrMagnitude < minMeleeDistance)
+                        {
+                            state = MeleeFighterState.TooNear;
+                            float distanceModifier = minMeleeDistance + (maxMeleeDistance - minMeleeDistance) * 2;
+                            movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * distanceModifier);
+                        }
+                        else
+                        {
+                            float distanceModifier = minMeleeDistance + (maxMeleeDistance - minMeleeDistance) * 2;
+                            movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * distanceModifier);
+                        }
+                    }
+
+
+                    if (weapon.CanAttack())
+                    {
+                        weapon.Attack(enemySensing.nearestEnemy.GetComponent<IDamageable<float>>());
+                    }
+
+
+
+                    break;
+
+                case MeleeFighterState.TooNear:
+                    Debug.Log("stt near: " + state);
+
+                    if (Time.time > nextDistanceCheckTime)
+                    {
+                        if (Time.time > nextDistanceCheckTime)
+                        {
+                            Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
+                            Vector3 myPosition = entity.transform.position;
+
+                            nextDistanceCheckTime = Time.time + distanceCheckingInterval;
+
+                            if ((nearestEnemyPosition - myPosition).sqrMagnitude > minMeleeDistance)
+                            {
+                                state = MeleeFighterState.InMeleeDistance;
+                                movement.Stop();
+                            }
+                            else
+                            {
+                                float distanceModifier = minMeleeDistance + (maxMeleeDistance - minMeleeDistance) * 2;
+                                movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * distanceModifier);
+                            }
+                        }
+                    }
+
+                    if (weapon.CanAttack())
+                    {
+                        weapon.Attack(enemySensing.nearestEnemy.GetComponent<IDamageable<float>>());
+                    }
+
+
+
+                    break;
+            }*/
+
+
+        }
+
+    public override void OnBehaviourExit()
+    {     
+        movement.Stop();
+        movement.StopLookAt();
+        inRange = false;
+    }
+
+    public override void OnBehaviourEnter()
+    {
+       /* Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
+        Vector3 myPosition = entity.transform.position;
+
+
+        if ((nearestEnemyPosition - myPosition).sqrMagnitude > maxMeleeDistance)
+        {
+            state = MeleeFighterState.TooFar;
+            movement.MoveTo(nearestEnemyPosition);
+        }
+        else if ((nearestEnemyPosition - myPosition).sqrMagnitude < minMeleeDistance)
+        {
+            state = MeleeFighterState.TooNear;
+            movement.LookAt(enemySensing.nearestEnemy.transform);
+            float distanceModifier = minMeleeDistance + (maxMeleeDistance - minMeleeDistance) * 2;
+            movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * distanceModifier);
+        }
+        else
+        {
+            state = MeleeFighterState.InMeleeDistance;
+            movement.LookAt(enemySensing.nearestEnemy.transform);
+        }*/
     }
 }
 

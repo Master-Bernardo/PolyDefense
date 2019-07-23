@@ -38,10 +38,11 @@ public class EC_Movement : Ability
     //update is only for looks- the rotation is important for logic but it can be a bit jaggy if far away or not on screen - lod this script, only call it every x seconds
     public override void UpdateAbility()
     {
-        if (lookAt)
-        {
+       if (lookAt)
+       {
             if (Time.time > nextMovementUpdateTime)
             {
+                nextMovementUpdateTime = Time.time + movementUpdateIntervall;
                 if (targetToLookAt != null)
                 {
                     RotateTo(targetToLookAt.position - transform.position);
@@ -74,6 +75,7 @@ public class EC_Movement : Ability
     {
         this.targetToLookAt = targetToLookAt;
         agent.updateRotation = false;
+        lastRotationTime = Time.time;
         lookAt = true;
     }
 
@@ -105,7 +107,7 @@ public class EC_Movement : Ability
 
      private void OnDrawGizmos()
      {
-         if (showGizmo)
+         if (showGizmo && agent!=null)
          {
              if (agent.destination != null)
              {
