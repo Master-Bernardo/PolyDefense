@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_ScanForEnemyBuildings : Ability
+public class EC_ScanForEnemyBuildings : EntityComponent
 {
     public int buildingsLayer;
     public BuildingType buidingToScanFor;
@@ -14,13 +14,13 @@ public class EC_ScanForEnemyBuildings : Ability
     public float scanRadius;
     float nextScanTime;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         nextScanTime = Time.time + Random.Range(0, scanInterval);
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         if (Time.time > nextScanTime)
         {

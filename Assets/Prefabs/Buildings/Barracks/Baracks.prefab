@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 0
-  abilities:
+  components:
   - {fileID: 4175499010010618577}
   aimingCorrector: {x: 0, y: 0, z: 0}
   onDieEvent:
@@ -450,7 +450,9 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   width: 4
   buildingData: {fileID: 11400000, guid: 983669e8674dddf4a90c166b6cbba38a, type: 2}
+  currentHealth: 0
   buildingType: 0
+  isBase: 0
 --- !u!114 &4175499010010618577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,11 +688,6 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
-    - target: {fileID: 8023028661816348046, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8709500003715420332, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}
       propertyPath: m_IsActive
@@ -700,6 +697,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 8023028661816348046, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3445515304547534967, guid: d90b7631b6ad6b0438ec9e39cebe07a0,
         type: 3}

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_Populator : Ability
+public class EC_Populator : EntityComponent
 {
     public int populationValue;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
         PlayerManager.Instance.RaisePopulation(populationValue);
     }

@@ -34,7 +34,7 @@ public class RecruitmentQueueElement
 }
 
 //like spawner, but it only spawns if we tell it to spawn
-public class EC_Barracks : Ability, IDepositioneable<B_Worker>, IQueueHolder<int, int>
+public class EC_Barracks : EntityComponent, IDepositioneable<B_Worker>, IQueueHolder<int, int>
 {
     public UnitData[] units;
     [Tooltip("needs to be the same length as units")]
@@ -157,7 +157,7 @@ public class EC_Barracks : Ability, IDepositioneable<B_Worker>, IQueueHolder<int
     }
 
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
         for (int i = 0; i < unitsUIButtons.Length; i++)
         {
@@ -165,10 +165,16 @@ public class EC_Barracks : Ability, IDepositioneable<B_Worker>, IQueueHolder<int
         }
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
-
-
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.Log("units on their way");
+            foreach (B_Worker worker in peopleOnTheirWayToBarracks)
+            {
+                Debug.Log(worker);
+            }
+        }
 
 
         //how to take care of this reruitment queue

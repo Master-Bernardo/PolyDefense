@@ -12,9 +12,9 @@ public class Ab_UAI_MissileAttacker : Ab_UnitAI
     public EC_MissileWeapon weapon;
 
     // Start is called before the first frame update
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         currentBehaviour = null;
         missileBehaviour.SetUpBehaviour(entity, movement, sensing, weapon);
         attackBaseBehaviour.SetUpBehaviour(entity, movement, weapon);

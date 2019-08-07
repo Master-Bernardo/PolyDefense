@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_MissileAttacker : Ability
+public class EC_MissileAttacker : EntityComponent
 {
     public EC_Movement movement;
     public EC_ScanForEnemyUnits sensing;
@@ -34,9 +34,9 @@ public class EC_MissileAttacker : Ability
 
     MissileFighterState state;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
 
         maximalShootingDistance *= maximalShootingDistance;
         minimalShootingDistance *= minimalShootingDistance;
@@ -44,7 +44,7 @@ public class EC_MissileAttacker : Ability
 
 
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         switch (state)
         {

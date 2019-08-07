@@ -23,7 +23,7 @@ public class WorkerAssignerUI : MonoBehaviour
     public ClickeableButton[] buttons;
     //or every button gives a different int value - one is 0 etc...
     IWorkerAssigneable<int> assignealbe;
-    public Ability assigneableAb; //because unity doesnt serialise interfaces, we get it on awake
+    public EntityComponent assigneableAb; //because unity doesnt serialise interfaces, we get it on awake
     public Canvas canvas;
 
    

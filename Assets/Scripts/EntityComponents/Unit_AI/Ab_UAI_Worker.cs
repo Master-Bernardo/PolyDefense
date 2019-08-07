@@ -11,12 +11,12 @@ public class Ab_UAI_Worker : Ab_UnitAI
     public EC_ScanForEnemyUnits sensing;
 
     // Start is called before the first frame update
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
-        currentBehaviour = null;
+        base.SetUpComponent(entity);      
         fleeBehaviour.SetUpBehaviour(entity, movement, sensing);
         workerBehaviour.SetUpBehaviour(entity, movement);
+        SetCurrentBehaviour(workerBehaviour);
     }
 
     public override void CheckCurrentBehaviour()

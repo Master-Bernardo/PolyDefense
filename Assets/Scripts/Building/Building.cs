@@ -32,6 +32,7 @@ public class Building : GameEntity, IDamageable<float>
   
     }
 
+
     public virtual void Awake()
     {
         currentHealth = buildingData.healthPoints;

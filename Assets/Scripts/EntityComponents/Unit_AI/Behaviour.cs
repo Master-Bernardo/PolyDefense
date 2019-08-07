@@ -135,11 +135,14 @@ public class B_MeleeFighter : Behaviour
     //the fighter will be between this distances, he does not need to stop to attack
     public float perfectMeleeDistance;
     public float maxMeleeDistance;
-    public float minMeleeDistance;
+    //public float minMeleeDistance;
+
+    float myWidth;
+    float enemyWidth;
 
     //meleefighting
     EC_MeleeWeapon weapon;
-
+    [SerializeField]
     bool inRange;
 
     public void SetUpBehaviour(GameEntity entity, EC_Movement movement, EC_ScanForEnemyUnits enemySensing, EC_MeleeWeapon weapon)
@@ -153,14 +156,14 @@ public class B_MeleeFighter : Behaviour
         maxMeleeDistance *= maxMeleeDistance;
     }
 
-    enum MeleeFighterState
+    /*enum MeleeFighterState
     {
         TooFar,
         TooNear,
         InMeleeDistance
     }
 
-    MeleeFighterState state;
+    MeleeFighterState state;*/
 
     protected override void Update()
     {
@@ -168,11 +171,16 @@ public class B_MeleeFighter : Behaviour
         {
             nextDistanceCheckTime = Time.time + distanceCheckingInterval;
 
+            myWidth = entity.width;
+            enemyWidth = enemySensing.nearestEnemy.width;
+
             Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
             Vector3 myPosition = entity.transform.position;
 
-            float distanceToEnemy = (nearestEnemyPosition - myPosition).sqrMagnitude;
-            Debug.Log("distance: " + distanceToEnemy);
+            float widthFactor = myWidth + enemyWidth; //multiply the resulting distanceVectorBythisFactor to also use width
+            Vector3 distanceVector = nearestEnemyPosition - myPosition;
+            //float distanceToEnemySquared = (distanceVector - distanceVector.normalized * widthFactor).sqrMagnitude;
+            float distanceToEnemy = (distanceVector - distanceVector.normalized * widthFactor).magnitude;
 
             //if the enemy is moving, we move to the position he will be at the time we arrive
             EC_Movement enemyMovement = enemySensing.nearestEnemy.GetComponent<EC_Movement>();
@@ -182,18 +190,16 @@ public class B_MeleeFighter : Behaviour
             {
                 //heuristically calculae future position
                 //1. how long will it take for me to reach the enemy?
-                float timeToReachEnemy = distanceToEnemy/distanceToEnemy / movement.GetMaxSpeed();
-                Debug.Log("time to reach Enemy: " + timeToReachEnemy);
+                float timeToReachEnemy = distanceToEnemy / movement.GetMaxSpeed();
                 //2. where will the enemy be after this time
                 Vector3 futurePosition = nearestEnemyPosition + enemyMovement.GetCurrentVelocity() * timeToReachEnemy;
-                Debug.Log("future position: " + futurePosition);
 
 
                 movement.MoveTo(futurePosition);
             }
             else
             {
-                movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * perfectMeleeDistance);
+                movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * (perfectMeleeDistance+myWidth+enemyWidth));
             }
 
             if ((nearestEnemyPosition - myPosition).sqrMagnitude > maxMeleeDistance)
@@ -230,173 +236,89 @@ public class B_MeleeFighter : Behaviour
 [System.Serializable]
 public class B_MissileFighter : Behaviour
 {
+    //refactor and add distance checking with width
+
     EC_Movement movement;
-    EC_ScanForEnemyUnits sensing;
+    EC_ScanForEnemyUnits enemySensing;
     EC_MissileWeapon weapon;
     //goes to nearest enemy, shoots  and looks at them when in range, tries not to get too close
 
-    public float maximalShootingDistance;
-    float maximalShootingDistanceSquared;
-    public float minimalShootingDistance;
-    float minimalShootingDistanceSquared;
+    public float perfectShootingDistance;
+    public float maxShootingDistance;
+    bool inRange;
+
+    float myWidth;
+    float enemyWidth;
 
 
     public float distanceCheckingInterval;
     float nextDistanceCheckTime;
 
-    enum MissileFighterState
+    public void SetUpBehaviour(GameEntity entity, EC_Movement movement, EC_ScanForEnemyUnits enemySensing, EC_MissileWeapon weapon)
     {
-        TooFarAway,
-        TooNear,
-        InShootingDistance,
-    }
-
-    MissileFighterState state;
-
-    public void SetUpBehaviour(GameEntity entity, EC_Movement movement, EC_ScanForEnemyUnits sensing, EC_MissileWeapon weapon)
-    {
-        this.sensing = sensing;
+        this.enemySensing = enemySensing;
         this.entity = entity;
         this.movement = movement;
         this.weapon = weapon;
 
         nextDistanceCheckTime = UnityEngine.Random.Range(0, distanceCheckingInterval);
 
-        maximalShootingDistanceSquared =  maximalShootingDistance * maximalShootingDistance;
-        minimalShootingDistanceSquared = minimalShootingDistance  * minimalShootingDistance;
+        maxShootingDistance *= maxShootingDistance;
+
     }
 
     protected override void Update()
     {
-        switch (state)
+        if (Time.time > nextDistanceCheckTime)
         {
-            case MissileFighterState.TooNear:
+            nextDistanceCheckTime = Time.time + distanceCheckingInterval;
 
-                if (Time.time > nextDistanceCheckTime)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
+            myWidth = entity.width;
+            enemyWidth = enemySensing.nearestEnemy.width;
 
-                    float distanceToEnemy = (sensing.nearestEnemy.transform.position - entity.transform.position).sqrMagnitude;
-                    if (distanceToEnemy > minimalShootingDistanceSquared) 
-                    {
-                        state = MissileFighterState.InShootingDistance;
-                        movement.Stop();
-                    }
-                    else
-                    {
-                        //move to a position perfectly in the shooting range
-                        movement.MoveTo(entity.transform.position + (entity.transform.position - sensing.nearestEnemy.transform.position).normalized * (maximalShootingDistance/2));
-                    }
+            Vector3 nearestEnemyPosition = enemySensing.nearestEnemy.transform.position;
+            Vector3 myPosition = entity.transform.position;
 
-                    weapon.AimAt(sensing.nearestEnemy);
-                    movement.LookAt(sensing.nearestEnemy.transform);
+            float widthFactor = myWidth + enemyWidth; //multiply the resulting distanceVectorBythisFactor to also use width
+            Vector3 distanceVector = nearestEnemyPosition - myPosition;
+            float distanceToEnemy = (distanceVector - distanceVector.normalized * widthFactor).sqrMagnitude;
 
-                }
+            movement.MoveTo(nearestEnemyPosition + (myPosition - nearestEnemyPosition).normalized * (perfectShootingDistance + myWidth + enemyWidth));
+     
+            if ((nearestEnemyPosition - myPosition).sqrMagnitude > maxShootingDistance)
+            {
+                inRange = false;
+                movement.StopLookAt();
+                weapon.StopAiming();
+                //Debug.Log("stop aim");
+            }
+            else
+            {
+                inRange = true;
+               // Debug.Log("start aim");
 
-                if (weapon.CanShoot()) weapon.Shoot();
+                movement.LookAt(enemySensing.nearestEnemy.transform);
+                weapon.AimAt(enemySensing.nearestEnemy);
 
-
-                break;
-
-            case MissileFighterState.TooFarAway:
-
-                if (Time.time > nextDistanceCheckTime)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
-
-
-
-                    //also check via raycast if we see the enemy
-
-
-                    float distanceToEnemy = (sensing.nearestEnemy.transform.position - entity.transform.position).sqrMagnitude;
-
-                    if (distanceToEnemy < maximalShootingDistanceSquared)
-                    {
-                        state = MissileFighterState.InShootingDistance;
-                        movement.Stop();
-                    }
-                    else
-                    {
-                        movement.MoveTo(sensing.nearestEnemy.transform.position);
-                    }
-                }
-                break;
-
-            case MissileFighterState.InShootingDistance:
-
-                //1. check if we need to change state
-                if (Time.time > nextDistanceCheckTime)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
-
-                    float distanceToEnemy = (sensing.nearestEnemy.transform.position - entity.transform.position).sqrMagnitude;
-
-                    if (distanceToEnemy > maximalShootingDistanceSquared)
-                    {
-                        state = MissileFighterState.TooFarAway;
-                        movement.StopLookAt();
-                        weapon.StopAiming();
-                        movement.MoveTo(sensing.nearestEnemy.transform.position);
-                    }
-                    else if (distanceToEnemy < minimalShootingDistanceSquared)
-                    {
-                        state = MissileFighterState.TooNear;
-                        movement.LookAt(sensing.nearestEnemy.transform);
-                        movement.MoveTo(entity.transform.position + (entity.transform.position - sensing.nearestEnemy.transform.position).normalized * (maximalShootingDistance / 2));
-                    }
-
-                    weapon.AimAt(sensing.nearestEnemy);
-                    movement.LookAt(sensing.nearestEnemy.transform);
-
-
-                    //add some collisionChecking
-                    /*
-                    RaycastHit hit;
-                    if (Physics.Raycast(unitAI.transform.position, unitAI.transform.forward, out hit, Mathf.Infinity))
-                    {
-                        if (hit.collider.transform != sensing.nearestEnemy.transform)
-                        {
-                           // movement.MoveTo.
-                        }
-                    }   */
-
-                }
-
-                if (weapon.CanShoot()) weapon.Shoot();
-
-
-                break;
+            }
         }
-    }
 
-    public override void OnBehaviourEnter()
-    {
-        float distanceToEnemy = (sensing.nearestEnemy.transform.position - entity.transform.position).sqrMagnitude;
-        if (distanceToEnemy < minimalShootingDistanceSquared)
+        if (inRange)
         {
-            state = MissileFighterState.TooNear;
-            movement.MoveTo(entity.transform.position + (entity.transform.position - sensing.nearestEnemy.transform.position).normalized * (maximalShootingDistance / 2));
+            if (weapon.CanShoot())
+            {
+                weapon.Shoot();
+            }
         }
-        else if (distanceToEnemy > maximalShootingDistanceSquared)
-        {
-            state = MissileFighterState.TooFarAway;
-            movement.StopLookAt();
-            movement.MoveTo(sensing.nearestEnemy.transform.position);
-            weapon.StopAiming();
-        }
-        else
-        {
-            movement.LookAt(sensing.nearestEnemy.transform);
-            movement.Stop();
-            state = MissileFighterState.InShootingDistance;
-        }
+
+       
     }
 
     public override void OnBehaviourExit()
     {
+        movement.Stop();
         movement.StopLookAt();
-        weapon.StopAiming(); 
+        inRange = false;
     }
 }
 
@@ -424,6 +346,9 @@ public class B_MeleeAttackBuilding : Behaviour
     public float maxMeleeDistance;
     bool inRange;
 
+    float myWidth;
+    float enemyBuildingWidth;
+
     public void SetUpBehaviour(GameEntity entity, EC_Movement movement, EC_MeleeWeapon weapon)
     {
         this.entity = entity;
@@ -444,13 +369,18 @@ public class B_MeleeAttackBuilding : Behaviour
     {
         if(Time.time> nextDistanceCheckTime)
         {
+            myWidth = entity.width;
+            enemyBuildingWidth = targetBuilding.width;
+
             nextDistanceCheckTime = Time.time + distanceCheckingInterval;
 
             Vector3 buildingPosition = targetBuilding.transform.position;
             Vector3 myPosition = entity.transform.position;
 
-            float distanceSquared = (buildingPosition - myPosition).sqrMagnitude;
-
+            float widthFactor = myWidth+enemyBuildingWidth; //multiply the resulting distanceVectorBythisFactor to also use width
+            Vector3 distanceVector = buildingPosition - myPosition;
+            float distanceSquared = (distanceVector-distanceVector.normalized*widthFactor).sqrMagnitude;
+           
             if (distanceSquared > maxMeleeDistance)
             {
                 inRange = false;
@@ -461,7 +391,7 @@ public class B_MeleeAttackBuilding : Behaviour
                 inRange = true;
             }
 
-            movement.MoveTo(buildingPosition + (myPosition - buildingPosition).normalized * perfectMeleeDistance);
+            movement.MoveTo(buildingPosition + (myPosition - buildingPosition).normalized * (perfectMeleeDistance+myWidth+enemyBuildingWidth));
 
         }
 
@@ -472,49 +402,6 @@ public class B_MeleeAttackBuilding : Behaviour
                 weapon.Attack();
             }
         }
-
-        /*switch (state)
-        {
-            case AttackBuildingState.BehaviourStart:
-
-                movement.MoveTo(targetBuilding.transform.position);
-                state = AttackBuildingState.MovingToBuilding;
-
-                break;
-
-            case AttackBuildingState.MovingToBuilding:
-
-                if (Time.time > nextDistanceCheckTime)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
-
-                    if (weapon.IsInMeleeRange(targetBuilding.transform.position))
-                    {
-                        state = AttackBuildingState.InMeleeDistance;
-                        movement.Stop();
-                    }
-                }
-
-                break;
-
-            case AttackBuildingState.InMeleeDistance:
-
-                if (!weapon.IsInMeleeRange(targetBuilding.transform.position))
-                {
-                    state = AttackBuildingState.BehaviourStart;
-                }
-                else
-                {
-                    if (weapon.CanAttack())
-                    {
-                        weapon.Attack(targetBuilding.GetComponent<IDamageable<float>>());
-                    }
-                }
-
-
-
-                    break;
-        }*/
     }
 }
 
@@ -522,26 +409,26 @@ public class B_MeleeAttackBuilding : Behaviour
 public class B_MissileAttackBuilding : Behaviour
 {
     Building targetBuilding;
-    EC_Movement movement;
 
+    public void SetTargetBuilding(Building targetBuilding)
+    {
+        this.targetBuilding = targetBuilding;
+    }
+
+    EC_Movement movement;
     EC_MissileWeapon weapon;
+    //goes to nearest enemy, shoots  and looks at them when in range, tries not to get too close
+
+    public float perfectShootingDistance;
+    public float maxShootingDistance;
+    bool inRange;
+
+    float myWidth;
+    float enemyWidth;
+
 
     public float distanceCheckingInterval;
     float nextDistanceCheckTime;
-
-    public float maximalShootingDistance;
-    float maximalShootingDistanceSquared;
-    public float minimalShootingDistance;
-    float minimalShootingDistanceSquared;
-
-    enum AttackBuildingState
-    {
-        TooFarAway,
-        TooNear,
-        InShootingDistance,
-    }
-
-    AttackBuildingState state;
 
     public void SetUpBehaviour(GameEntity entity, EC_Movement movement, EC_MissileWeapon weapon)
     {
@@ -549,115 +436,64 @@ public class B_MissileAttackBuilding : Behaviour
         this.movement = movement;
         this.weapon = weapon;
 
-        maximalShootingDistanceSquared = maximalShootingDistance * maximalShootingDistance;
-        minimalShootingDistanceSquared = minimalShootingDistance * minimalShootingDistance;
-
         nextDistanceCheckTime = UnityEngine.Random.Range(0, distanceCheckingInterval);
 
-    }
+        maxShootingDistance *= maxShootingDistance;
 
-    public void SetTargetBuilding(Building targetBuilding)
-    {
-        this.targetBuilding = targetBuilding;
-    }
-
-    public override void OnBehaviourEnter()
-    {
-        float distanceToEnemy = (targetBuilding.transform.position - entity.transform.position).sqrMagnitude;
-        if (distanceToEnemy < minimalShootingDistanceSquared)
-        {
-            state = AttackBuildingState.TooNear;
-            movement.LookAt(targetBuilding.transform);
-            weapon.AimAt(targetBuilding);
-            movement.MoveTo(entity.transform.position + (entity.transform.position- targetBuilding.transform.position).normalized * (maximalShootingDistance / 2));
-        }
-        else if (distanceToEnemy > maximalShootingDistanceSquared)
-        {
-
-            state = AttackBuildingState.TooFarAway;
-            movement.StopLookAt();
-            movement.MoveTo(targetBuilding.transform.position);
-            weapon.StopAiming();
-        }
-        else
-        {
-            movement.LookAt(targetBuilding.transform);
-            movement.Stop();
-            state = AttackBuildingState.InShootingDistance;
-            weapon.AimAt(targetBuilding);
-        }
     }
 
     protected override void Update()
     {
-        switch (state)
+        if (Time.time > nextDistanceCheckTime)
         {
-            case AttackBuildingState.TooNear:
+            nextDistanceCheckTime = Time.time + distanceCheckingInterval;
 
-                if (nextDistanceCheckTime > Time.time)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
-                    if((targetBuilding.transform.position - entity.transform.position).sqrMagnitude > minimalShootingDistanceSquared)
-                    {
-                        movement.Stop();
-                        state = AttackBuildingState.InShootingDistance;
-                    }
-                }
+            myWidth = entity.width;
+            enemyWidth = targetBuilding.width;
 
-                if (weapon.CanShoot()) weapon.Shoot();
+            Vector3 buildingPosition = targetBuilding.transform.position;
+            Vector3 myPosition = entity.transform.position;
 
+            float widthFactor = myWidth + enemyWidth; //multiply the resulting distanceVectorBythisFactor to also use width
+            Vector3 distanceVector = buildingPosition - myPosition;
+            float distanceToEnemy = (distanceVector - distanceVector.normalized * widthFactor).sqrMagnitude;
 
+            movement.MoveTo(buildingPosition + (myPosition - buildingPosition).normalized * (perfectShootingDistance + myWidth + enemyWidth));
 
+            if ((buildingPosition - myPosition).sqrMagnitude > maxShootingDistance)
+            {
+                inRange = false;
+                movement.StopLookAt();
+                weapon.StopAiming();
+            }
+            else
+            {
+                inRange = true;
+                movement.LookAt(targetBuilding.transform);
+                weapon.AimAt(targetBuilding);
 
-                break;
-
-            case AttackBuildingState.InShootingDistance:
-
-                if (nextDistanceCheckTime > Time.time)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
-                    float distanceToEnemy = (targetBuilding.transform.position - entity.transform.position).sqrMagnitude;
-
-                    if (distanceToEnemy < minimalShootingDistanceSquared)
-                    {
-                        state = AttackBuildingState.TooNear;
-                        movement.LookAt(targetBuilding.transform);
-                        movement.MoveTo(entity.transform.position + (entity.transform.position - targetBuilding.transform.position).normalized * (maximalShootingDistance / 2));
-                    }
-                    else if (distanceToEnemy > maximalShootingDistanceSquared)
-                    {
-                        state = AttackBuildingState.TooFarAway;
-                        movement.StopLookAt();
-                        movement.MoveTo(targetBuilding.transform.position);
-                        weapon.StopAiming();
-                    }
-                }
-
-                if (weapon.CanShoot()) weapon.Shoot();
-
-
-
-                break;
-
-            case AttackBuildingState.TooFarAway:
-
-                if (nextDistanceCheckTime > Time.time)
-                {
-                    nextDistanceCheckTime = Time.time + distanceCheckingInterval;
-
-                    if ((targetBuilding.transform.position - entity.transform.position).sqrMagnitude < maximalShootingDistanceSquared)
-                    {
-                        movement.LookAt(targetBuilding.transform);
-                        movement.Stop();
-                        state = AttackBuildingState.InShootingDistance;
-                        weapon.AimAt(targetBuilding);
-                    }
-
-                }
-                    break;
-
+            }
         }
+
+        if (inRange)
+        {
+            if (weapon.CanShoot())
+            {
+                weapon.Shoot();
+            }
+        }
+
+
     }
+
+    public override void OnBehaviourExit()
+    {
+        movement.Stop();
+        movement.StopLookAt();
+        inRange = false;
+    }
+
+
 }
 
 [System.Serializable]
@@ -759,6 +595,7 @@ public class B_Worker: Behaviour
         this.movement = movement;
         nextScanTime = Time.time + UnityEngine.Random.Range(0, scanInterval);
         AssignToIdle();
+        
     }
 
     public override void OnBehaviourEnter()
@@ -1161,12 +998,14 @@ public class B_Worker: Behaviour
         movement.MoveTo(targetPosition);
         //movement.MoveTo(despositionBuilding.transform.position);
         nextScanTime = Time.time;
+        ChangeAcessories();
+
 
     }
 
     public void AssignToIdle()
     {
-        if(state == WorkerState.Depositing)
+        if (state == WorkerState.Depositing)
         {
             despositionBuilding.GetComponent<IDepositioneable<B_Worker>>().OnWorkerCancelsTasks(this);
         }
@@ -1188,6 +1027,14 @@ public class B_Worker: Behaviour
         switch (state)
         {
             case WorkerState.Idle:
+
+                constructionAccesories.SetActive(false);
+                ferHarvestingAccesories.SetActive(false);
+                merHarvestingAccesories.SetActive(false);
+
+                break;
+
+            case WorkerState.Depositing:
 
                 constructionAccesories.SetActive(false);
                 ferHarvestingAccesories.SetActive(false);

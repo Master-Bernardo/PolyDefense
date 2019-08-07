@@ -13,24 +13,24 @@ public interface IDamageable<T>
 public class GameEntity : MonoBehaviour
 {
     public int teamID;
-    public Ability[] abilities;
+    public EntityComponent[] components;
     public Vector3 aimingCorrector; //correctes the aiming, sets it higher, because every units 0 is at the bottom for distance chekcs
     public UnityEvent onDieEvent;
     public float width;
 
     private void Start()
     {
-        foreach (Ability ability in abilities)
+        foreach (EntityComponent component in components)
         {
-            ability.SetUpAbility(this);
+            component.SetUpComponent(this);
         }
     }
 
-    public void Update()
+    protected void Update()
     {
-        foreach (Ability ability in abilities)
+        foreach (EntityComponent ability in components)
         {
-            ability.UpdateAbility();
+            ability.UpdateComponent();
         }
     }
 
@@ -42,7 +42,7 @@ public class GameEntity : MonoBehaviour
     public virtual void Die()
     {
         onDieEvent.Invoke();
-        foreach (Ability ability in abilities)
+        foreach (EntityComponent ability in components)
         {
             ability.OnDie();
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 /* todo not yet imlemented*/
-public class Ab_UnitAI : Ability
+public class Ab_UnitAI : EntityComponent
 {
     //switches between different behaviours 
 
@@ -13,16 +13,16 @@ public class Ab_UnitAI : Ability
     protected Behaviour currentBehaviour;
  
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         /*for (int i = 0; i < behaviours.Length; i++)
         {
             behaviours[i].SetUp(this);
         }*/
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         //1check if we need to change the current Bahaviour
         CheckCurrentBehaviour();

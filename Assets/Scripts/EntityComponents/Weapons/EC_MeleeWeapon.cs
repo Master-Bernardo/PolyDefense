@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_MeleeWeapon : Ability
+public class EC_MeleeWeapon : EntityComponent
 {
     //public float meleeRange;
     public float meleeDamage;
@@ -22,9 +22,13 @@ public class EC_MeleeWeapon : Ability
     public float hitSphereRadius;
     int weaponTeamID;
 
-    public override void SetUpAbility(GameEntity entity)
+    [Header("pushing")]
+    public bool pushes;
+    public float pushForce;
+
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         //meleeRange *= meleeRange; //because we do a square magnitude check
         weaponTeamID = entity.teamID;
     }
@@ -43,7 +47,7 @@ public class EC_MeleeWeapon : Ability
         }
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         if (attack)
         {
@@ -91,6 +95,20 @@ public class EC_MeleeWeapon : Ability
                 {
                     damageable.TakeDamage(meleeDamage);
                 }
+
+                if (pushes)
+                {
+                    IPusheable<Vector3> pusheable = visibleColliders[i].gameObject.GetComponent<IPusheable<Vector3>>();
+
+                    if (pusheable != null)
+                    {
+                        Vector3 direction = (visibleColliders[i].gameObject.transform.position - myEntity.transform.position).normalized;
+
+                        pusheable.Push(direction * pushForce);
+                    }
+                }
+                
+
                 return;
             }
 

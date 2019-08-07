@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_WorkerPresentation : Ability
+public class EC_WorkerPresentation : EntityComponent
 {
     public float lookInterval;
     float nextLookTime;
     public EC_Movement movement;
     public Transform lookAtObject;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
         lookAtObject.SetParent(null);
         nextLookTime = Time.time + Random.Range(lookInterval / 2, lookInterval);
@@ -17,7 +17,7 @@ public class EC_WorkerPresentation : Ability
         movement.LookAt(lookAtObject);
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         if (Time.time > nextLookTime)
         {

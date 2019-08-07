@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //the base ability
-public class EC_Base : Ability, IWorkerAssigneable<int>
+public class EC_Base : EntityComponent, IWorkerAssigneable<int>
 {
     [Tooltip("at which distancde to the base can buildings be constructed?")]
     public float buildingDistance;
@@ -16,9 +16,9 @@ public class EC_Base : Ability, IWorkerAssigneable<int>
     public WorkerAssignerUI assignerUI;
 
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         BuildingSystem.Instance.SetBaseBuilding(this);
     }
 

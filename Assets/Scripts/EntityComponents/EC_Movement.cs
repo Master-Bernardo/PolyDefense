@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class EC_Movement : Ability
+[RequireComponent(typeof(Rigidbody))]
+public class EC_Movement : EntityComponent, IPusheable<Vector3>
 {  
     [HideInInspector]
     NavMeshAgent agent;
@@ -24,21 +25,42 @@ public class EC_Movement : Ability
     bool lookAt = false;
     float lastRotationTime; // if we rotate only once every x frames, we need to calculate our own deltaTIme
 
-    public override void SetUpAbility(GameEntity entity)
+    //pushing with rb
+    Rigidbody rb;
+    public bool canBePushed;
+    bool isBeingPushed = false;
+    [Tooltip("under which velocity is the pushed agent not considered pushed anymore")]
+    public float pushTreshold;
+    float velocityLastTime;
+    bool movementOrderIssuedWhileBeingPushed = false;
+    Vector3 targetMovePositionNotYetOrdered;
+
+    public override void SetUpComponent(GameEntity entity)
     {
         agent = GetComponent<NavMeshAgent>();
-
+        rb = GetComponent<Rigidbody>();
         //almost the same speed as original navmeshAgent
         angularSpeed = agent.angularSpeed;
         //optimisation
         nextMovementUpdateTime = Time.time + Random.Range(0, movementUpdateIntervall);
 
+        pushTreshold *= pushTreshold;
     }
 
     //update is only for looks- the rotation is important for logic but it can be a bit jaggy if far away or not on screen - lod this script, only call it every x seconds
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
-       if (lookAt)
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Debug.Log("move");
+            MoveTo(transform.position + new Vector3(-5, 0 - 5));
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Push(new Vector3(50000f, 5000f, 0));
+        }
+
+        if (lookAt)
        {
             if (Time.time > nextMovementUpdateTime)
             {
@@ -48,6 +70,57 @@ public class EC_Movement : Ability
                     RotateTo(targetToLookAt.position - transform.position);
                 }
             }
+       }
+
+        if (isBeingPushed)
+        {
+           // Debug.Log("current veloity: " + rb.velocity.sqrMagnitude);
+            //Debug.Log("pushTreshold: " + pushTreshold);
+            float velocityThisTime = rb.velocity.sqrMagnitude;
+
+            //because of the start of the push the velocity can also be like 0, so we only check against the treshold, when the velocity is getting smaller
+            if (velocityThisTime < velocityLastTime)
+            {
+                if (velocityThisTime < pushTreshold)
+                {
+                    isBeingPushed = false;
+                    agent.enabled = true;
+                    rb.isKinematic = true;
+
+                    if (movementOrderIssuedWhileBeingPushed)
+                    {
+                        MoveTo(targetMovePositionNotYetOrdered);
+                    }
+                }
+            }
+           
+
+            velocityLastTime = rb.velocity.sqrMagnitude;
+        }
+
+        
+    }
+
+    public void Push(Vector3 force)
+    {
+        if (canBePushed)
+        {
+            Debug.Log("destination " + agent.destination);
+            if (agent.destination != null)
+            {
+                movementOrderIssuedWhileBeingPushed = true;
+                targetMovePositionNotYetOrdered = agent.destination;
+            }
+
+            isBeingPushed = true;
+            agent.enabled = false;
+            rb.isKinematic = false;
+           // StopLookAt();
+
+            rb.AddForce(force);
+            velocityLastTime = 0;
+
+            
         }
     }
 
@@ -66,7 +139,15 @@ public class EC_Movement : Ability
     //for now simple moveTo without surface ship or flying
     public void MoveTo(Vector3 destination)
     {
-        agent.SetDestination(destination);
+        if (!isBeingPushed)
+        {
+            agent.SetDestination(destination);
+        }
+        else
+        {
+            movementOrderIssuedWhileBeingPushed = true;
+            targetMovePositionNotYetOrdered = destination;
+        }
     }
 
 
@@ -87,12 +168,16 @@ public class EC_Movement : Ability
 
     public bool IsMoving()
     {
-        return agent.velocity.magnitude > agent.speed/2;
+            return agent.velocity.magnitude > agent.speed / 2;
     }
 
     public void Stop()
     {
-        agent.ResetPath();
+        if (agent.isActiveAndEnabled)
+        {
+            agent.ResetPath();
+
+        }
     }
 
     public float GetCurrentVelocityMagnitude()

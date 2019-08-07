@@ -156,3 +156,6 @@ MonoBehaviour:
   startVelocity: 0
   projectileTeamID: 0
   radius: 0.4
+  pushes: 1
+  pushForce: 20000
+  defaultPushForce: 0

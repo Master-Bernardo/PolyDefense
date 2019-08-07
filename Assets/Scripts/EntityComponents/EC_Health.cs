@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EC_Health : Ability
+public class EC_Health : EntityComponent
 {
     public float currentHealth;
     public float maxHealth;
@@ -16,9 +16,9 @@ public class EC_Health : Ability
     public float changeColorTIme;
     float nextGoBackToNormalColorTIme;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         maxHealth = entity.GetComponent<Unit>().unitData.healthPoints;
         currentHealth = maxHealth;
 
@@ -61,9 +61,9 @@ public class EC_Health : Ability
         }
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
-        base.UpdateAbility();
+        base.UpdateComponent();
 
         if (colorChanged)
         {

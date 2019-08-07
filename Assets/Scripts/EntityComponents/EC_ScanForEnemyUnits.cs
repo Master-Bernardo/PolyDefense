@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 //maybe change this to sensing with scanning obptions or let all the scanning options derive from snesing later
-public class EC_ScanForEnemyUnits : Ability
+public class EC_ScanForEnemyUnits : EntityComponent
 {
     public HashSet<GameEntity> enemiesInRange = new HashSet<GameEntity>();
     public GameEntity nearestEnemy;
@@ -14,13 +14,13 @@ public class EC_ScanForEnemyUnits : Ability
     public float scanRadius;
     float nextScanTime;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         nextScanTime = Time.time + Random.Range(0, scanInterval);
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         if (Time.time > nextScanTime)
         {

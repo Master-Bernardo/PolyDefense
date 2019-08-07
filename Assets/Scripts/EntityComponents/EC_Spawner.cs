@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_Spawner : PassiveToogleableAbility
+public class EC_Spawner : EntityComponent
 {
     public float populationSpawnInterval;
     [SerializeField]
@@ -13,14 +13,14 @@ public class EC_Spawner : PassiveToogleableAbility
 
     bool reachedLimit;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         nextPopulationSpawnTime = Time.time + populationSpawnInterval;
         reachedLimit = false;
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         if (reachedLimit)
         {

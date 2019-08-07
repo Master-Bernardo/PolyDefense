@@ -12,9 +12,9 @@ public class Ab_UAI_MeleeAttacker : Ab_UnitAI
     public EC_MeleeWeapon weapon;
 
     // Start is called before the first frame update
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         currentBehaviour = null;
         meleeBehaviour.SetUpBehaviour(entity, movement, sensing, weapon);
         attackBaseBehaviour.SetUpBehaviour(entity, movement, weapon);

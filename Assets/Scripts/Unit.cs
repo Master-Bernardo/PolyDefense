@@ -15,7 +15,7 @@ public class Unit : GameEntity, IDamageable<float>
 
     public void TakeDamage(float damage)
     {
-        foreach (Ability ability in abilities)
+        foreach (EntityComponent ability in components)
         {
             ability.OnTakeDamage(damage);
         }

@@ -6,7 +6,7 @@ using UnityEngine;
 /* 
  * later on , make either a type enum or children - for drawable - bow and magic and - reloadable - crossbow or gun weapons
  */ 
-public class EC_MissileWeapon : Ability
+public class EC_MissileWeapon : EntityComponent
 {
     public float shootingInterval;
     float nextShootingTime;
@@ -29,16 +29,17 @@ public class EC_MissileWeapon : Ability
     [Tooltip("the bullet gets rotated randomly upon shooting, so we add some skill based aiming")]
     public float shootingError;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         nextShootingTime = Time.time + shootingInterval;
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         if (aiming)
         {
+            //tod ofix shaking of wepon when enemy is to near on gravity shot someday
             //use weapon transform for rotation, use spwanpoint position for  distance checks
 
             if (currentTarget != null)
@@ -67,6 +68,7 @@ public class EC_MissileWeapon : Ability
                 }
                 else
                 {
+
                     Vector3 enemyPosition = currentTarget.GetPositionForAiming();
                     Vector3 launchPointPosition = projectileSpawnPoint.position;
                     Vector3 weaponPosition = transform.position;
@@ -138,7 +140,6 @@ public class EC_MissileWeapon : Ability
 
                 }
 
-         
                 RotateTowards(desiredAimVector);
             }
         }
@@ -198,7 +199,7 @@ public class EC_MissileWeapon : Ability
     {
         //Quaternion desiredLookRotation = Quaternion.LookRotation(position - turrenRotatingBarrel.transform.position);
         Quaternion desiredLookRotation = Quaternion.LookRotation(desiredLookVector);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredLookRotation, turningSpeed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredLookRotation, turningSpeed*Time.deltaTime);
 
     }
 

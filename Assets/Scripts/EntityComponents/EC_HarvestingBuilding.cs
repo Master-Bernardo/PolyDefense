@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_HarvestingBuilding : Ability, IWorkerAssigneable<int>
+public class EC_HarvestingBuilding : EntityComponent, IWorkerAssigneable<int>
 {
     public RessourceType type;
 

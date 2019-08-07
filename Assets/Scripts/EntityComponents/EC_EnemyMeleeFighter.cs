@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EC_EnemyMeleeFighter : Ability
+public class EC_EnemyMeleeFighter : EntityComponent
 {
    /* public EC_Movement movement;
     public EC_ScanForEnemyUnits sensing;

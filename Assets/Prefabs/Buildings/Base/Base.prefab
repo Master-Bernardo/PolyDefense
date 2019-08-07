@@ -90,9 +90,9 @@ GameObject:
   - component: {fileID: 3644395887809339982}
   - component: {fileID: 4014299731185755517}
   - component: {fileID: 8723116577412060729}
-  - component: {fileID: 8937111721270957868}
   - component: {fileID: 240051667145607188}
   - component: {fileID: 4534025424324244974}
+  - component: {fileID: 178149291932093262}
   m_Layer: 10
   m_Name: Base
   m_TagString: Untagged
@@ -131,17 +131,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 0
-  abilities:
+  components:
   - {fileID: 3644395887809339982}
   - {fileID: 4014299731185755517}
   - {fileID: 8723116577412060729}
-  aimingCorrector: {x: 0, y: 0, z: 0}
+  aimingCorrector: {x: 0, y: 4, z: 0}
   onDieEvent:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  width: 3
+  width: 2
   buildingData: {fileID: 11400000, guid: c61c1260629f9a74690a44ed8dd34d43, type: 2}
   currentHealth: 0
   buildingType: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29605c1889aeaff4f836c669ec74d3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationLimit: 5
+  populationLimit: 3
 --- !u!114 &8723116577412060729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,25 +186,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ba4cfc7bb480dd4e8a1f4a0ccbc394e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
   populationSpawnInterval: 2
   nextPopulationSpawnTime: 0
   spawnPoint: {fileID: 603051837100056525}
   workerPrefab: {fileID: 1362219360397472217, guid: 81919978fcf5def428444c22f80fdc53,
     type: 3}
---- !u!65 &8937111721270957868
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196051205229791962}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0000001, y: 8, z: 3}
-  m_Center: {x: 0, y: 4, z: 0}
 --- !u!208 &240051667145607188
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -235,6 +221,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menu: {fileID: 3955404869549393629}
   buttons: []
+--- !u!136 &178149291932093262
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196051205229791962}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6814137422540020384
 GameObject:
   m_ObjectHideFlags: 0

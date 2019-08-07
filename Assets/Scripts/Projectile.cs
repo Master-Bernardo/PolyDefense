@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
@@ -11,6 +13,13 @@ public class Projectile : MonoBehaviour
 
     public float radius;
     Rigidbody rb;
+    [Tooltip("does this projectile push enemies back?")]
+    public bool pushes;
+    public float pushForce;
+    [Tooltip("default pushForce is the one from the rb")]
+    public bool defaultPushForce;
+
+    Vector3 velocityLastFrame; //wen need to save this because it changes on collision
 
     // Start is called before the first frame update
     void Start()
@@ -20,50 +29,19 @@ public class Projectile : MonoBehaviour
 
     }
 
-   /* private void Update()
+    private void FixedUpdate()
     {
-        RaycastHit hit;
-        Ray ray = new Ray(transform.position, transform.forward);
-
-        if (Physics.Raycast(ray, out hit, 1f))
+        if (pushes)
         {
-            
-            IDamageable<float> damageable = hit.transform.gameObject.GetComponent<IDamageable<float>>();
-            Debug.Log("hitted:" + damageable);
-            if (damageable != null)
-            {
-                GameEntity entity = hit.transform.gameObject.GetComponent<GameEntity>();
-                if (entity != null)
-                {
-                    if (!Settings.Instance.friendlyFire)
-                    {
-                        DiplomacyStatus diplomacyStatus = Settings.Instance.GetDiplomacyStatus(projectileTeamID, entity.teamID);
-                        if (diplomacyStatus == DiplomacyStatus.War)
-                        {
-                            damageable.TakeDamage(damage);
-                        }
-
-                    }
-                    else
-                    {
-                        damageable.TakeDamage(damage);
-                    }
-
-                }
-                else
-                {
-                    damageable.TakeDamage(damage);
-                }
-            }
-
-            Destroy(gameObject);
+            velocityLastFrame = rb.velocity;
         }
-    }*/
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
-        //solve this with I Damageable
-        // if(collision)
         IDamageable<float> damageable = collision.gameObject.GetComponent<IDamageable<float>>();
+        IPusheable<Vector3> pusheable = collision.gameObject.GetComponent<IPusheable<Vector3>>();
 
         if (damageable != null)
         {
@@ -92,7 +70,24 @@ public class Projectile : MonoBehaviour
             }
         }
 
+        if (pusheable != null)
+        {
+            if (defaultPushForce)
+            {
+                pusheable.Push(velocityLastFrame);
+            }
+            else
+            {
+                pusheable.Push(velocityLastFrame.normalized* pushForce);
+                Debug.Log(rb.velocity);
+                Debug.Log("actual: " + rb.velocity.normalized * pushForce);
+                
+            }
+        }
+
         Destroy(gameObject);
 
     }
+
+
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EC_Turrent : Ability
+public class EC_Turrent : EntityComponent
 {
 
     public float shootingInterval;
@@ -24,13 +24,13 @@ public class EC_Turrent : Ability
     public Transform projectileSpawnPoint;
     public EC_ScanForEnemyUnits scanForEnemies;
 
-    public override void SetUpAbility(GameEntity entity)
+    public override void SetUpComponent(GameEntity entity)
     {
-        base.SetUpAbility(entity);
+        base.SetUpComponent(entity);
         nextShootingTime = Time.time + Random.Range(0, shootingInterval);
     }
 
-    public override void UpdateAbility()
+    public override void UpdateComponent()
     {
         if (scanForEnemies.nearestEnemy != null)
         {
