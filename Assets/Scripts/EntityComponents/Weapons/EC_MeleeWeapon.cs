@@ -74,7 +74,7 @@ public class EC_MeleeWeapon : EntityComponent
             {
                 // check who did we hit, check if he has an gameEntity
                 GameEntity entity = visibleColliders[i].gameObject.GetComponent<GameEntity>();
-                Debug.Log("damegable entity: " + entity);
+               // Debug.Log("damegable entity: " + entity);
                 if (entity != null)
                 {
                     if (!Settings.Instance.friendlyFire)
@@ -105,7 +105,7 @@ public class EC_MeleeWeapon : EntityComponent
                     {
    
                         Vector3 direction = (visibleColliders[i].gameObject.transform.position - myEntity.transform.position).normalized;
-                        Debug.Log("push: " + pusheable);
+                       // Debug.Log("push: " + pusheable);
                         pusheable.Push(direction * pushForce);
                     }
                 }

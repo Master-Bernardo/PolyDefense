@@ -19,7 +19,8 @@ public class EC_Health : EntityComponent
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
-        maxHealth = entity.GetComponent<Unit>().unitData.healthPoints;
+        Unit unit = entity.GetComponent<Unit>();
+        if(unit!=null)maxHealth = unit.unitData.healthPoints;
         currentHealth = maxHealth;
 
 

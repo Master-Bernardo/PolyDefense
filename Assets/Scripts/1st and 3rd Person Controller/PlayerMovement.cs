@@ -14,37 +14,14 @@ public class PlayerMovement : MonoBehaviour
     public float turnSpeed;
 
     bool jump;
+    public float jumpForce;
 
     Vector3 nextMovementForce;
-    // Start is called before the first frame update
-    void Start()
+
+    public void Jump()
     {
-        
+        jump = true;
     }
-
-    // Update is called once per frame
-    /*void Update()
-    {
-        Vector3 lookRotation = cam.forward;
-        lookRotation.y = 0;
-        SetRotation(Quaternion.LookRotation(lookRotation));
-
-    }*/
-    /*
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        
-        /*if (vertical < 0)
-        {
-            vertical *= accelerationForceForward;
-        }
-        else
-        {
-            vertical *= accelerationForceBackwards;
-        }*/
-
-       // nextMovementForce = rb.transform.TransformDirection(new Vector3(horizontal, 0, vertical) * accelerationForce);
-    //}*/
 
     public void Move(Vector3 movementVector)
     {
@@ -59,16 +36,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        /*rb.AddForce(nextMovementForce);
 
-        if (rb.velocity.magnitude > maxSpeed)
-        {
-            rb.velocity = rb.velocity.normalized * maxSpeed;
-            Debug.Log("too fast");
-
-        }*/
         rb.MovePosition(transform.position + nextMovementForce * Time.deltaTime);
 
+        if (jump)
+        {
+            rb.AddForce(new Vector3(0, jumpForce, 0),ForceMode.Impulse);
+            jump = false;
+        }
 
     }
 

@@ -39,7 +39,6 @@ public class EC_ScanForEnemyUnits : EntityComponent
         for (int i = 0; i < visibleColliders.Length; i++)
         {
             GameEntity currentEntity = visibleColliders[i].GetComponent<GameEntity>();
-
             if(currentEntity.teamID != myEntity.teamID)
             {
                 enemiesInRange.Add(currentEntity);

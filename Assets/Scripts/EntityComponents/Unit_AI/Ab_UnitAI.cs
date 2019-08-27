@@ -27,7 +27,7 @@ public class Ab_UnitAI : EntityComponent
         //1check if we need to change the current Bahaviour
         CheckCurrentBehaviour();
         //2. update bahaviour
-        currentBehaviour.UpdateBehaviour();
+        if(currentBehaviour != null)currentBehaviour.UpdateBehaviour();
     }
 
     public virtual void CheckCurrentBehaviour()
@@ -41,7 +41,7 @@ public class Ab_UnitAI : EntityComponent
         {
             if(currentBehaviour!=null)currentBehaviour.OnBehaviourExit();
             currentBehaviour = newBehaviour;
-            currentBehaviour.OnBehaviourEnter();
+            if(currentBehaviour!=null)currentBehaviour.OnBehaviourEnter();
         }
     }
 

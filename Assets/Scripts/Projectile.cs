@@ -79,8 +79,8 @@ public class Projectile : MonoBehaviour
             else
             {
                 pusheable.Push(velocityLastFrame.normalized* pushForce);
-                Debug.Log(rb.velocity);
-                Debug.Log("actual: " + rb.velocity.normalized * pushForce);
+               // Debug.Log(rb.velocity);
+                //Debug.Log("actual: " + rb.velocity.normalized * pushForce);
                 
             }
         }

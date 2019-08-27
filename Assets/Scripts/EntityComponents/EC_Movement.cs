@@ -105,7 +105,7 @@ public class EC_Movement : EntityComponent, IPusheable<Vector3>
     {
         if (canBePushed)
         {
-            Debug.Log("destination " + agent.destination);
+            //Debug.Log("destination " + agent.destination);
             if (agent.destination != null)
             {
                 movementOrderIssuedWhileBeingPushed = true;

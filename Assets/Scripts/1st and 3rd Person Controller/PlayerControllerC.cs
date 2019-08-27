@@ -43,7 +43,7 @@ public class PlayerControllerC : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Debug.Log("movement: " + new Vector3(horizontal, 0, vertical));
+        //Debug.Log("movement: " + new Vector3(horizontal, 0, vertical));
         playerMovement.Move(new Vector3(horizontal, 0, vertical));
         
         //playerMovement.LookAt(tPCam.transform.forward);
@@ -95,6 +95,11 @@ public class PlayerControllerC : MonoBehaviour
                 fPCam.EnableCam();
                 tPCam.DisableCam();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            playerMovement.Jump();
         }
 
 
